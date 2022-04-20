@@ -1,0 +1,11 @@
+@import url('./left-right-btn.css');
+@import url('./btn.css');
+@import url('./main-table-header.css');
+@import url('./main-table-days.css');
+@import url('./table-item.css');
+@import url('./table-total.css');
+
+.main-table {
+    flex-grow: 1;
+    padding-top: 32px;
+}

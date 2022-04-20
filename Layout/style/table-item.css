@@ -1,0 +1,41 @@
+@import url('./table-iten-active.css');
+
+.table-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #B8B8B8;
+}
+.table-item-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 70px;
+}
+.table-item-left .head {
+    display: flex;
+    justify-content: center;
+}
+.table-item-left .head p {
+    margin-right: 8px;
+}
+.table-item-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 16px;
+}
+.table-item-right .btn {
+    margin-left: 16px;
+}
+.btn.start {
+    width: 90px;
+}
+.btn.start img {
+    /* width: 20px;
+    height: 22px; */
+    margin-right: 6px;
+}
+.btn.edit {
+    height: 36px;
+    width: 98px;
+}
