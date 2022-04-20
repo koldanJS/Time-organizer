@@ -1,14 +1,19 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
+import Header from './components/Header/Header';
+import Main from './components/Main/Main';
+import './App.css'
 
 function App() {
 
   const title = useSelector(state => state.some.title)
 
   return (
-    <div>
-      <p>{title}</p>
-    </div>
+    <>
+      <Header />
+
+      <Main />
+    </>
   );
 }
 
