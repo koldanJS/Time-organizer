@@ -1,4 +1,4 @@
-.table-item.active {
+/* .table-item.active {
     background: linear-gradient(90deg, #CE6AFD5C, #F2D8FF5C, #CE6AFD5C);
     background-size: 200% 200%;
     animation: gradient 3s linear infinite;
@@ -49,4 +49,4 @@
 }
 .table-item.active .strike.minute {
     animation-duration: 10s;
-}
+} */

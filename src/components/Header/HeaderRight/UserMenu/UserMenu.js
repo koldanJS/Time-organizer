@@ -9,12 +9,12 @@ const UserMenu = () => {
         {
             title: 'ФИ',
             class: 'circle',
-            classes: ['text', 'size-20', 'width-900', 'color-white']
+            classes: ['size-20', 'width-900', 'color-white']
         },
         {
             title: 'Username',
             class: 'user-name',
-            classes: ['text', 'size-20']
+            classes: ['size-20']
         }
     ]
 

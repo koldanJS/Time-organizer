@@ -1,0 +1,16 @@
+.left-right-btn {
+    display: flex;
+    border-radius: 10px;
+    background-color: gray;
+}
+.left-right-btn:hover {
+    background-color: #CE6AFD;
+}
+.left-right-btn.arrow {
+    width: 72px;
+    margin-right: 6px;
+}
+.left-right-btn.day-week {
+    background-color: #CE6AFD;
+    width: 134px;
+}

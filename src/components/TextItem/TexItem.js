@@ -3,8 +3,11 @@ import './TexItem.css'
 
 const TextItem = ({classes, text}) => {
 
+    let classList = ['text']
+    if (classes) classList = [...classList, ...classes]
+
     return (
-        <p className={classes.join(' ')} >
+        <p className={classList.join(' ')} >
             {text}
         </p>
     )
