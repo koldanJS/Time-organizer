@@ -24,8 +24,9 @@ function App() {
       console.log(error)
     }
   }
-
+console.log('render')
   useEffect(() => {
+    console.log('getUser')
     dispatch(asyncgetUser(userId))
   }, [])
 
