@@ -1,0 +1,1 @@
+export const ADD_PROJECT = 'PROJECTS/ADD_PROJECT'
