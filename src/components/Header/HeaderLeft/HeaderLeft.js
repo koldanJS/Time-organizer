@@ -5,9 +5,9 @@ import './HeaderLeft.css'
 const HeaderLeft = () => {
 
     const headerItems = [
-        {title: '', classes: ['header-item', 'home'], img: 'homeLogo', alt: 'Home', menu: false},
-        {title: 'Время', classes: ['header-item', 'tab'], img: '', alt: '', menu: false},
-        {title: 'Проект', classes: ['header-item', 'tab'], img: '', alt: '', menu: false}
+        {title: '', classType: 'home', img: {name: 'homeLogo', alt: 'Home'}, menu: false},
+        {title: 'Время', classType: 'tab', img: '',menu: false},
+        {title: 'Проект', classType: 'tab', img: '',menu: false}
     ]
 
     return (

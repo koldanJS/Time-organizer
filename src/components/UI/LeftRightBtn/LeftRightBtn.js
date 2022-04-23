@@ -3,7 +3,7 @@ import BtnLeft from './BtnLeft/BtnLeft'
 import BtnRight from './BtnRight/BtnRight'
 import './LeftRightBtn.css'
 
-const LeftRightBtn = ({classType}) => {
+const LeftRightBtn = ({classType, clickHandler}) => {
 
     const classList = ['left-right-btn']
     classList.push(classType)
@@ -41,8 +41,8 @@ const LeftRightBtn = ({classType}) => {
 
     return (
         <div className={classList.join(' ')} >
-            <BtnLeft {...props[classType].left} />
-            <BtnRight {...props[classType].right} />
+            <BtnLeft {...props[classType].left} clickHandler={clickHandler} />
+            <BtnRight {...props[classType].right} clickHandler={clickHandler} />
         </div>
     )
 }

@@ -7,7 +7,7 @@ import './MainTable.css'
 
 const MainTable = () => {
 
-    
+   
 
     return (
         <div className='main-table'>

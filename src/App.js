@@ -3,20 +3,18 @@ import { useSelector, useDispatch } from 'react-redux'
 import Header from './components/Header/Header'
 import Main from './components/Main/Main'
 import './App.css'
-import { addUser, asyncgetUser } from './redux/actions/userActions'
+import { asyncGetUser } from './redux/actions/userActions'
+import { asyncGetProject } from './redux/actions/projectActions'
+import { asyncGetTask } from './redux/actions/taskActions'
 import MainTable from './components/Main/MainTable/MainTable'
 import axiosHandler from './axios/axiosHandler'
-// import {task1, task2, task3, task4, task5, project1, project2, user} from './initialState'
 
 function App() {
 
-  // const title = useSelector(state => state.some.title)
-  const userId = '-N0G0EiMhQ5OBTG7jGTW'
+  const userId = '-N0KopPM_ruX0sSk49Ni'
   
   const dispatch = useDispatch()
-  // dispatch(addUser(user))
 
-  
   async function addUser(item) {
     try {
       await axiosHandler.post('/users.json', item)
@@ -24,19 +22,28 @@ function App() {
       console.log(error)
     }
   }
-console.log('render')
+
+  const getData = async () => {
+    const projectsId = await dispatch(asyncGetUser(userId))
+    for (let projectId of projectsId) {
+      const tasksId = await dispatch(asyncGetProject(projectId))  //Сделать у user поле с его задачами
+      for (let taskId of tasksId) {
+        await dispatch(asyncGetTask(taskId))
+      }
+    }
+  }
+
   useEffect(() => {
-    console.log('getUser')
-    dispatch(asyncgetUser(userId))
+    getData()
   }, [])
 
   // useEffect(() => {  //Добавить данные в БД
-  //   addUser({title: true})
+  //   addUser(user)
   // }, [Date.now()])
 
   return (
     <>
-      <Header />  {/* Проверить все вложенные компоненты (передача состояния) */}
+      <Header />
       <Main />
     </>
   );

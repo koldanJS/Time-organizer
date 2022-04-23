@@ -5,8 +5,6 @@ import MainTable from './MainTable/MainTable'
 
 const Main = () => {
 
-    
-
     return (
         <main>
             <div className='container'>

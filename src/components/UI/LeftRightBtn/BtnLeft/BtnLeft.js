@@ -3,7 +3,7 @@ import TextItem from '../../../TextItem/TexItem'
 import images from '../../../img/img'
 import './BtnLeft.css'
 
-const BtnLeft = ({classes, content}) => {
+const BtnLeft = ({classes, content, clickHandler}) => {
 
     let classList = ['btn-left']
     classList = [...classList, ...classes]
@@ -14,7 +14,7 @@ const BtnLeft = ({classes, content}) => {
     }
 
     return (
-        <a href='#' className={classList.join(' ')} >
+        <a onClick={() => clickHandler(-1)} className={classList.join(' ')} >
             { getContent() }
         </a>
     )

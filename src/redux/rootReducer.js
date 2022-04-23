@@ -3,11 +3,13 @@ import someReducer from './reducers/someReducer'
 import userReducer from './reducers/userReducer'
 import projectReducer from './reducers/projectReducer'
 import taskReducer from './reducers/taskReducer'
+import timeStateReducer from './reducers/appStateReducers/timeStateReducer'
 
 const rootReducer = combineReducers({
-    users: userReducer,
+    user: userReducer,
     projects: projectReducer,
     tasks: taskReducer,
+    timeState: timeStateReducer,
     some: someReducer
 })
 

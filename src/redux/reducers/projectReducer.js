@@ -1,24 +1,11 @@
-import { ADD_PROJECT } from "../types/projectTypes"
+import { ADD_PROJECT, GET_PROJECT } from "../types/projectTypes"
 
-const initialProject = {
-    id: 'initialProject',
-    keyName: null,
-    projectName: 'Start Project',
-    createdBy: 'Admin',
-    createdTime: Date.now(),
-    client: null,
-    dates: [],
-    description: 'A simple starter project to get started',
-    tasksId: [] 
-}
-
-const initialState = [
-    initialProject
-]
+const initialState = {}
 
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
-        case ADD_PROJECT: return [...state, action.payload]
+        case GET_PROJECT: return {...state, [action.payload.projectId]: action.payload.project}
+        // case ADD_PROJECT: return {...state, action.payload}
         default: return state
     }
 }

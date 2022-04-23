@@ -5,12 +5,10 @@ const HeaderRight = () => {
 
     const item = {
         title: 'Время',
-        classes: ['header-item', 'tab'],
+        classType: 'tab',
         img: '',
         alt: '',
-        menu: {
-            
-        }
+        menu: true
     }
 
     return (

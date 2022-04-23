@@ -6,11 +6,13 @@ const getUser = (user) => ({
     payload: user
 })
 
-export function asyncgetUser(userId) {
+export function asyncGetUser(userId) {
     return async dispatch => {
+        console.log('getUser')
         const response = await axiosHandler.get(`/users/${userId}.json`)
-        const data = response.data
-        dispatch(getUser(data))
+        const user = response.data
+        dispatch(getUser(user))
+        return user.projectsId
     }
 }
 
