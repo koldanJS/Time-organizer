@@ -2,8 +2,9 @@ import React from 'react'
 import TextItem from '../../../../../TextItem/TexItem'
 import './TableItemLeft.css'
 
-const TableItemLeft = ({keyName, projectName, taskName, executor}) => {
-
+const TableItemLeft = ({projectName, taskName}) => {
+    
+    const keyName = 'key'; const executor = 'исполнитель'
     const getKey = () => {
         if (keyName) return <TextItem classes={['width-700']} text={`[${keyName}]`} />
         return null

@@ -1,9 +1,14 @@
 import React from 'react'
 import TextItem from '../../../TextItem/TexItem'
 import Button from '../../../UI/Button/Button'
+import { getFormatTime, getTotalTime, useSimpledStore } from '../../../../functions/functions'
 import './TableTotal.css'
 
-const TableTotal = ({time}) => {
+const TableTotal = () => {
+
+    const { user, offset, selectedDate, selectedWeek } = useSimpledStore()
+
+    const time = getFormatTime(getTotalTime(selectedDate.dayNumber, user, selectedWeek))
 
     const content = {title: 'Отправить недельный отчет', img: '', isAnimate: false}
 

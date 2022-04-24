@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MainTableHeader from './MainTableHeader/MainTableHeader'
 import MainTableDays from './MainTableDays/MainTableDays'
 import MainTableItems from './MainTableItems/MainTableItems'
 import TableTotal from './TableTotal/TableTotal'
 import './MainTable.css'
+import AddTaskForm from '../../UI/AddTaskForm/AddTaskForm'
 
 const MainTable = () => {
 
-   
+   const [isAddFormOn, setIsAddFormOn] = useState(false)
 
     return (
         <div className='main-table'>
@@ -15,7 +16,8 @@ const MainTable = () => {
             <MainTableDays />
             <hr className='demiliter' />
             <MainTableItems />
-            <TableTotal time='8:30' />
+            <TableTotal />
+            {/* <AddTaskForm /> */}
         </div>
     )
 }

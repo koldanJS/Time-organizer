@@ -1,83 +1,26 @@
-import { CHANGE_DATE } from "../../types/appStateTypes/timeStateTypes"
+import { getDate, getSelectedWeek } from "../../../functions/functions"
+import { CHANGE_DATA, CHANGE_WEEK } from "../../types/appStateTypes/timeStateTypes"
 
-const msPerDay = 1000*3600*24
-
-const getDate = (offset) => {
-    const shortDays = [
-        'Вс',
-        'Пн',
-        'Вт',
-        'Ср',
-        'Чт',
-        'Пт',
-        'Сб'
-    ]
-    const days = [
-        'Воскресенье',
-        'Понедельник',
-        'Вторник',
-        'Среда',
-        'Четверг',
-        'Пятница',
-        'Суббота'
-    ]
-    const monthDay = [
-        'Январь',
-        'Февраль',
-        'Март',
-        'Апрель',
-        'Май',
-        'Июнь',
-        'Июль',
-        'Август',
-        'Сентябрь',
-        'Октябрь',
-        'Ноябрь',
-        'Декабрь'
-    ]
-    const monthDayShort = [
-        'Янв',
-        'Сен',
-        'Мар',
-        'Апр',
-        'Май',
-        'Июн',
-        'Июл',
-        'Авг',
-        'Сен',
-        'Окт',
-        'Ноя',
-        'Дек'
-    ]
-    const now = offset ? new Date(Date.now() + offset*msPerDay) : new Date()
-    const localDay = offset ? `${days[now.getDay()]},` : 'Сегодня:'
-    return {
-        year: now.getFullYear(),
-        month: now.getMonth() + 1,
-        monthDay: monthDay[now.getMonth()],
-        monthDayShort: monthDayShort[now.getMonth()],
-        dayOfMonth: now.getDate(),
-        dayNumber: now.getDay(),
-        day: days[now.getDay()],
-        dayShort: shortDays[now.getDay()],
-        localDay
-    }
-}
-
-console.log(getDate(+1))
+// console.log(getDate(0))
 
 const initialState = {
     offset: 0,
     currentDate: getDate(),
     selectedDate: getDate(),
+    selectedWeek: getSelectedWeek(0)
 }
 
 const timeStateReducer = (state = initialState, action) => {
     switch(action.type) {
-        case CHANGE_DATE: {
+        case CHANGE_DATA: {
             const newOffset = state.offset + action.payload
-            return {...state, selectedDate: getDate(newOffset), offset: newOffset}
+            return {
+                ...state,
+                selectedDate: getDate(newOffset),
+                offset: newOffset,
+                selectedWeek: getSelectedWeek(newOffset)}
         }
+        // case CHANGE_WEEK: return {...state, selectedWeek: getSelectedWeek(state.offset)}
         default: return state
     }
 }

@@ -1,7 +1,11 @@
-import { CHANGE_DATE } from "../../types/appStateTypes/timeStateTypes";
+import { CHANGE_DATA, CHANGE_WEEK } from "../../types/appStateTypes/timeStateTypes";
 
 
-export const changeDate = (direction) => ({
-    type: CHANGE_DATE,
+export const changeData = (direction) => ({
+    type: CHANGE_DATA,
     payload: direction
+})
+
+export const changeWeek = () => ({
+    type: CHANGE_WEEK,
 })

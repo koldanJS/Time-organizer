@@ -12,7 +12,10 @@ export function asyncGetUser(userId) {
         const response = await axiosHandler.get(`/users/${userId}.json`)
         const user = response.data
         dispatch(getUser(user))
-        return user.projectsId
+        return {
+            projectsId: user.projectsId,
+            tasksId: user.tasksId
+        }
     }
 }
 

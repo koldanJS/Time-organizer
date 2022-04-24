@@ -26,3 +26,13 @@
 .inline-text {
     display: inline-block;
 }
+.link {
+    color: rgb(21, 109, 185);
+    text-decoration: underline;
+    cursor: pointer;
+}
+.link:active {
+    color: rgb(253, 52, 146);
+    text-decoration: underline;
+    cursor: pointer;
+}

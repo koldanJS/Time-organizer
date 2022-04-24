@@ -1,10 +1,14 @@
 import React from 'react'
+import { useSimpledStore } from '../../../../functions/functions.js'
 import { useSelector } from 'react-redux'
 import TextItem from '../../../TextItem/TexItem.js'
 import images from '../../../img/img'
 import './UserMenu.css'
 
 const UserMenu = () => {
+
+    const { user } = useSimpledStore()
+    const userInfo = user.info
 
     const menuItem = [
         {
@@ -19,10 +23,9 @@ const UserMenu = () => {
         }
     ]
     
-    const userInfo = useSelector(store => store.user.info)
     if (userInfo) {
         menuItem[0].title = userInfo.firstName[0] + userInfo.lastName[0]
-        menuItem[0].title = userInfo.firstName
+        menuItem[1].title = userInfo.firstName
     }
 
     return (

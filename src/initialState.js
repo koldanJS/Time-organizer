@@ -2,6 +2,7 @@
 
 const description = {
     //LeftRightBtn - хорошо поработать над состоянием кнопки, который хранится в компоненте!
+    //MainTableDays - Исправить ужасный массив
 }
 
 export const user = {
@@ -16,13 +17,35 @@ export const user = {
         photo: null,
     },
     projectsId: ['-N0G-0aJliVmC0VbYc8D', '-N0G-322Zx1NeCeEB2j8'],
+    tasksId: ['-N0Fz6ZYH3b5uss0IvEb', '-N0FzAcRdvYvOw0i_x2_', '-N0FzCagpefDYUDYnzD1', '-N0FzD332ESvhgc-8N-Y', '-N0FzDYHZHP-SwKEINJA'],
     timesSheets: {
-        '2022-04-20': [ //POST запрос не допускает поля с точечной нотацией
-            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0Fz6ZYH3b5uss0IvEb', description: 'some discription', totalTime: '1:30', isActive: false},
-            {projectId: '-N0G-322Zx1NeCeEB2j8', taskId: '-N0FzD332ESvhgc-8N-Y', description: 'some discription', totalTime: '2:30', isActive: true},
-            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0FzAcRdvYvOw0i_x2_', description: 'some discription', totalTime: '1:00', isActive: false},
-            {projectId: '-N0G-322Zx1NeCeEB2j8', taskId: '-N0FzDYHZHP-SwKEINJA', description: 'some discription', totalTime: '3:40', isActive: false},
-            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0FzCagpefDYUDYnzD1', description: 'some discription', totalTime: '0:30', isActive: false},
+        '2022-4-23': [ //POST запрос не допускает поля с точечной нотацией
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0Fz6ZYH3b5uss0IvEb', description: 'some discription1', totalTime: 140, isActive: false},
+            {projectId: '-N0G-322Zx1NeCeEB2j8', taskId: '-N0FzD332ESvhgc-8N-Y', description: 'some2', totalTime: 250, isActive: false},
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0FzAcRdvYvOw0i_x2_', description: 'some discription3', totalTime: 80, isActive: false},
+            {projectId: '-N0G-322Zx1NeCeEB2j8', taskId: '-N0FzDYHZHP-SwKEINJA', description: 'some4', totalTime: 20, isActive: false},
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0FzCagpefDYUDYnzD1', description: 'some discription5', totalTime: 120, isActive: false}
+        ],
+        '2022-4-24': [
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0Fz6ZYH3b5uss0IvEb', description: 'some discription1', totalTime: 256, isActive: false},
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0FzAcRdvYvOw0i_x2_', description: 'some discription3', totalTime: 320, isActive: true},
+            {projectId: '-N0G-322Zx1NeCeEB2j8', taskId: '-N0FzDYHZHP-SwKEINJA', description: 'some4', totalTime: 10, isActive: false},
+            {projectId: '-N0G-322Zx1NeCeEB2j8', taskId: '-N0FzD332ESvhgc-8N-Y', description: 'some2', totalTime: 100, isActive: false},
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0FzCagpefDYUDYnzD1', description: 'some discription5', totalTime: 80, isActive: false}
+        ],
+        '2022-4-25': [
+            {projectId: '-N0G-322Zx1NeCeEB2j8', taskId: '-N0FzD332ESvhgc-8N-Y', description: 'some2', totalTime: 300, isActive: false},
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0FzAcRdvYvOw0i_x2_', description: 'some discription3', totalTime: 50, isActive: false},
+            {projectId: '-N0G-322Zx1NeCeEB2j8', taskId: '-N0FzDYHZHP-SwKEINJA', description: 'some4', totalTime: 80, isActive: false},
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0Fz6ZYH3b5uss0IvEb', description: 'some discription1', totalTime: 120, isActive: false},
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0FzCagpefDYUDYnzD1', description: 'some discription5', totalTime: 180, isActive: false}
+        ],
+        '2022-4-26': [
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0Fz6ZYH3b5uss0IvEb', description: 'some discription1', totalTime: 110, isActive: false},
+            {projectId: '-N0G-322Zx1NeCeEB2j8', taskId: '-N0FzD332ESvhgc-8N-Y', description: 'some2', totalTime: 90, isActive: false},
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0FzAcRdvYvOw0i_x2_', description: 'some discription3', totalTime: 60, isActive: false},
+            {projectId: '-N0G-322Zx1NeCeEB2j8', taskId: '-N0FzDYHZHP-SwKEINJA', description: 'some4', totalTime: 30, isActive: false},
+            {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0FzCagpefDYUDYnzD1', description: 'some discription5', totalTime: 240, isActive: false}
         ]
     },
     pendingApproval: [],
