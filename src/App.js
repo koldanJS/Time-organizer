@@ -1,7 +1,9 @@
 import React, {useEffect} from 'react'
+import {Route, Routes} from 'react-router-dom'
 import { useSimpledStore } from './functions/functions'
-import Header from './components/Header/Header'
-import Main from './components/Main/Main'
+import Time from './components/Main/Time/Time'
+import Home from './components/Main/Home/Home'
+import Projects from './components/Main/Projects/Projects'
 import './App.css'
 import { asyncGetUser } from './redux/actions/userActions'
 import { asyncGetProjects } from './redux/actions/projectActions'
@@ -9,6 +11,7 @@ import { asyncGetTasks } from './redux/actions/taskActions'
 import { loadingData } from './redux/actions/appStateActions/appStateActions'
 import axiosHandler from './axios/axiosHandler'
 import { user } from './initialState'
+import Layout from './components/hoc/Layout/Layout'
 
 function App() {
 
@@ -42,10 +45,13 @@ function App() {
   // }, [Date.now()])
 
   return (
-    <>
-      <Header />
-      <Main />
-    </>
+    <Layout >
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/time' element={<Time />} />
+        <Route path='/projects' element={<Projects />} />
+      </Routes>
+    </Layout>
   );
 }
 
