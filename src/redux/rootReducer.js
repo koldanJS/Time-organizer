@@ -6,7 +6,7 @@ import taskReducer from './reducers/taskReducer'
 import timeStateReducer from './reducers/appStateReducers/timeStateReducer'
 
 const rootReducer = combineReducers({
-    isLoading: appStateReducer,
+    appState: appStateReducer,
     user: userReducer,
     projects: projectReducer,
     tasks: taskReducer,

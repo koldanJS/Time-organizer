@@ -51,26 +51,27 @@ export const user = {
     pendingApproval: [],
     archive: []
 }
-
-export const project1 = {
-    keyName: null,
-    projectName: 'Start Project 1',
-    createdBy: '-N0KopPM_ruX0sSk49Ni',
-    createdTime: Date.now(),
-    client: null,
-    dates: [],
-    description: 'A simple starter project to get started',
-    tasksId: ['-N0Fz6ZYH3b5uss0IvEb', '-N0FzAcRdvYvOw0i_x2_', '-N0FzCagpefDYUDYnzD1'] 
-}
-export const project2 = {
-    keyName: null,
-    projectName: 'Start Project 2',
-    createdBy: '-N0KopPM_ruX0sSk49Ni',
-    createdTime: Date.now(),
-    client: null,
-    dates: [],
-    description: 'A simple starter project to get started',
-    tasksId: ['-N0FzD332ESvhgc-8N-Y', '-N0FzDYHZHP-SwKEINJA'] 
+export const projects = {
+    '-N0G-0aJliVmC0VbYc8D': {
+        keyName: null,
+        projectName: 'Start Project 1',
+        createdBy: '-N0KopPM_ruX0sSk49Ni',
+        createdTime: Date.now(),
+        client: null,
+        dates: [],
+        description: 'A simple starter project to get started',
+        tasksId: ['-N0Fz6ZYH3b5uss0IvEb', '-N0FzAcRdvYvOw0i_x2_', '-N0FzCagpefDYUDYnzD1'] 
+    },
+    '-N0G-322Zx1NeCeEB2j8': {
+        keyName: null,
+        projectName: 'Start Project 2',
+        createdBy: '-N0KopPM_ruX0sSk49Ni',
+        createdTime: Date.now(),
+        client: null,
+        dates: [],
+        description: 'A simple starter project to get started',
+        tasksId: ['-N0FzD332ESvhgc-8N-Y', '-N0FzDYHZHP-SwKEINJA'] 
+    }
 }
 
 export const task1 = {

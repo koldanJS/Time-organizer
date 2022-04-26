@@ -1,14 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useSimpledStore } from '../../../functions/functions'
 import MainTableHeader from './MainTableHeader/MainTableHeader'
 import MainTableDays from './MainTableDays/MainTableDays'
 import MainTableItems from './MainTableItems/MainTableItems'
 import TableTotal from './TableTotal/TableTotal'
 import './MainTable.css'
 import AddTaskForm from '../../UI/AddTaskForm/AddTaskForm'
+import { offAddForm } from '../../../redux/actions/appStateActions/appStateActions'
 
 const MainTable = () => {
 
-   const [isAddFormOn, setIsAddFormOn] = useState(false)
+    const { isAddFormOn, dispatch } = useSimpledStore()
+
+    const closeFormHandler = () => {
+        console.log('closeTask')
+        dispatch(offAddForm())
+    }
 
     return (
         <div className='main-table'>
@@ -17,7 +24,11 @@ const MainTable = () => {
             <hr className='demiliter' />
             <MainTableItems />
             <TableTotal />
-            {/* <AddTaskForm /> */}
+            {
+                isAddFormOn
+                    ? <AddTaskForm closeFormHandler={closeFormHandler} />
+                    : null
+            }
         </div>
     )
 }

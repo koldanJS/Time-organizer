@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSimpledStore } from './functions/functions'
 import Header from './components/Header/Header'
 import Main from './components/Main/Main'
 import './App.css'
@@ -14,7 +14,7 @@ function App() {
 
   const userId = '-N0KopPM_ruX0sSk49Ni'
   
-  const dispatch = useDispatch()
+  const { dispatch } = useSimpledStore()
 
   async function addUser(item) {
     try {

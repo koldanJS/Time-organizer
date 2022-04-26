@@ -1,11 +1,19 @@
 import { useSelector, useDispatch } from 'react-redux'
+import { loadingData } from '../redux/actions/appStateActions/appStateActions'
+import { asyncGetProjects } from '../redux/actions/projectActions'
+import { asyncGetTasks } from '../redux/actions/taskActions'
+import { asyncGetUser } from '../redux/actions/userActions'
 
 export const useSimpledStore = () => {
-    const { isLoading, user, projects, tasks, timeState } = useSelector(store => store)
-    const { offset, currentDate, selectedDate, selectedWeek } = useSelector(store => store.timeState)
+    const { appState, user, projects, tasks, timeState } = useSelector(store => store)
+    const { userId, isLoading, isAddFormOn } = appState
+    const { offset, currentDate, selectedDate, selectedWeek } = timeState
     const dispatch = useDispatch()
     return {
+        appState,
+        userId,
         isLoading,
+        isAddFormOn,
         user,
         projects,
         tasks,
@@ -15,6 +23,24 @@ export const useSimpledStore = () => {
         selectedDate,
         selectedWeek,
         dispatch
+    }
+}
+
+export const useUpdate = () => {
+    const { appState } = useSelector(store => store)
+    const { userId } = appState
+    const dispatch = useDispatch()
+
+    const getData = async () => {
+        dispatch(loadingData(true))
+        const { projectsId, tasksId } = await dispatch(asyncGetUser(userId))
+        await dispatch(asyncGetProjects(projectsId))
+        await dispatch(asyncGetTasks(tasksId))
+        dispatch(loadingData(false))
+      }
+
+    return {
+        getData
     }
 }
 
@@ -118,4 +144,20 @@ export const getFormatTime = (time, format = 'hh:mm') => {
         .replace('hh', hours)
         .replace('mm', minutes)
     return formatTime
+}
+export const getTimeNumber = (timeString) => {
+    if (timeString.indexOf(':') === -1) return Number(timeString)*60
+    const [ hours, minutes ] = timeString.split(':')
+    return Number(hours)*60 + Number(minutes)
+}
+export const controlTime = (timeString) => {
+    switch (timeString.length) {
+        case 0: return true
+        case 1: return timeString.search(/^[0-9]$/) + 1
+        case 2: return timeString.search(/^(([0-1]?[0-9]|2[0-3])|([0-9]:))$/) + 1
+        case 3: return timeString.search(/^(([0-1]?[0-9]|2[0-3]):|([0-9]:[0-9]))$/) + 1
+        case 4: return timeString.search(/^(([0-1]?[0-9]|2[0-3]):[0-9]|([0-9]:[0-5][0-9]))$/) + 1
+        case 5: return timeString.search(/^(([0,1][0-9])|(2[0-3])):[0-5][0-9]$/) + 1
+        default: return false
+    }
 }
