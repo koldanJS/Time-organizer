@@ -19,6 +19,7 @@ export const user = {
     },
     projectsId: ['-N0G-0aJliVmC0VbYc8D', '-N0G-322Zx1NeCeEB2j8'],
     tasksId: ['-N0Fz6ZYH3b5uss0IvEb', '-N0FzAcRdvYvOw0i_x2_', '-N0FzCagpefDYUDYnzD1', '-N0FzD332ESvhgc-8N-Y', '-N0FzDYHZHP-SwKEINJA'],
+    activeEntry: {timesSheetId: '2022-4-26', entryNumber: 1},
     timesSheets: {
         '2022-4-23': [ //POST запрос не допускает поля с точечной нотацией
             {projectId: '-N0G-0aJliVmC0VbYc8D', taskId: '-N0Fz6ZYH3b5uss0IvEb', description: 'some discription1', totalTime: 140, isActive: false},

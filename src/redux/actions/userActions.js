@@ -1,5 +1,5 @@
 import axiosHandler from "../../axios/axiosHandler";
-import { GET_USER, ADD_USER } from "../types/userTypes";
+import { GET_USER, SET_ACTIVE } from "../types/userTypes";
 
 const getUser = (user) => ({
     type: GET_USER,
@@ -19,7 +19,7 @@ export function asyncGetUser(userId) {
     }
 }
 
-export const addUser = (user) => ({
-    type: ADD_USER,
-    payload: user
+export const setActive = (newActiveEntry) => ({
+    type: SET_ACTIVE,
+    payload: newActiveEntry
 })

@@ -1,2 +1,2 @@
 export const GET_USER = 'USERS/GET_USER'
-export const ADD_USER = 'USERS/ADD_USER'
+export const SET_ACTIVE = 'USERS/SET_ACTIVE'

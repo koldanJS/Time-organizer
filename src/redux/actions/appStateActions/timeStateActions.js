@@ -1,4 +1,4 @@
-import { CHANGE_DATA, CHANGE_WEEK } from "../../types/appStateTypes/timeStateTypes";
+import { CHANGE_DATA, SET_ACTIVE } from "../../types/appStateTypes/timeStateTypes";
 
 
 export const changeData = (direction) => ({
@@ -6,6 +6,7 @@ export const changeData = (direction) => ({
     payload: direction
 })
 
-export const changeWeek = () => ({
-    type: CHANGE_WEEK,
+export const setActive = (taskId) => ({
+    type: SET_ACTIVE,
+    payload: taskId
 })

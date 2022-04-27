@@ -1,11 +1,11 @@
-import { GET_USER, ADD_USER } from "../types/userTypes"
+import { GET_USER, SET_ACTIVE } from "../types/userTypes"
 
 const initialState = {}
 
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_USER: return action.payload
-        case ADD_USER: return [...state, action.payload]    //????
+        case SET_ACTIVE: return {...state, activeEntry: action.payload }
         default: return state
     }
 }

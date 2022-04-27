@@ -6,14 +6,15 @@ import TextItem from '../../TextItem/TexItem'
 import ButtonForm from '../ButtonForm/ButtonForm'
 import Select from '../Select/Select'
 import './AddTaskForm.css'
+import { asyncGetUser } from '../../../redux/actions/userActions'
 
 const AddTaskForm = ({ closeFormHandler }) => {
 
     const { userId, user, projects, tasks, offset, dispatch } = useSimpledStore()
-    const { getData } = useUpdate()
+    const { getUpdateCurrent } = useUpdate()
 
     const [currentProjectId, setCurrentProjectId] = useState(user.projectsId[0])
-    const [currentTaskId, setCurrentTaskId] = useState(user.projectsId[0])
+    const [currentTaskId, setCurrentTaskId] = useState(user.tasksId[0])
     const [description, setDescription] = useState('')
     const [timeString, setTimeString] = useState('')
    
@@ -52,26 +53,47 @@ const AddTaskForm = ({ closeFormHandler }) => {
         setTimeString(newTimeString)
     }
 
+    const changeActiveEntry = async () => {
+        try {
+            //Для активной записи можно при рендеринге всегда писать время total + Date.now() - startTime
+            //lastActiveEntry
+            //Общее событие stopTracking - срабатывает при нажатии СТОП и при том, если во время рендеринга окажется, что dateString не за сегодня
+            //Каждую минуту будет происходить ререндеринг(если есть активная запись), при этом и все условия будут перепроверяться и время в активной записи обновляться
+            if (!offset) {
+                const newEntryNumber = user.timesSheets[getDateString()]?.length || 0
+                const newActiveEntry = { entryNumber: newEntryNumber, timesSheetId: getDateString(), startTime: Date.now() }
+                const urlEnd = `/users/${userId}/activeEntry.json`
+                await axiosHandler.put(urlEnd, newActiveEntry)
+            }
+        } catch(e) {
+            console.log('Не могу записать newActiveEntry: ', e)
+        }
+    }
+
     const createEntry = async (newTimesSheet, currentDateString) => {
-        const urlEnd = `/users/${userId}/timesSheets/${currentDateString}.json`
-        console.log('urlEnd ', urlEnd)
-        await axiosHandler.put(urlEnd, newTimesSheet)
+        try {
+            await changeActiveEntry()
+            const urlEnd = `/users/${userId}/timesSheets/${currentDateString}.json`
+            await axiosHandler.put(urlEnd, newTimesSheet)
+            getUpdateCurrent(asyncGetUser, userId)
+        } catch(e) {
+            console.log('Не могу записать newTimesSheet: ', e)
+        }
     }
 
     const submitHandler = event => {
         event.preventDefault()
         const newEntry = {
             description: description,
-            isActive: false,
+            isActive: !offset,
             projectId: currentProjectId,
-            tasksId: currentTaskId,
+            taskId: currentTaskId,
             totalTime: getTimeNumber(timeString)
         }
         const currentDateString = getDateString(offset)
         const TimesSheet = user.timesSheets[currentDateString] || []
         const newTimesSheet = [...TimesSheet, newEntry]
         createEntry(newTimesSheet, currentDateString)
-        getData()
         dispatch(offAddForm())
     }
 

@@ -4,7 +4,7 @@ import Animate from './Animate/Animate'
 import images from '../../img/img'
 import './Button.css'
 
-const Button = ({classType, content}) => {
+const Button = ({classType, content, clickHandler }) => {
 
     const classList = ['btn']
     if (classType) classList.push(classType)
@@ -22,7 +22,7 @@ const Button = ({classType, content}) => {
     }
 
     return (
-        <button className={classList.join(' ')} >
+        <button className={classList.join(' ')} onClick={clickHandler} >
             { getContent() }
         </button>
     )

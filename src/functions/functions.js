@@ -6,19 +6,21 @@ import { asyncGetUser } from '../redux/actions/userActions'
 
 export const useSimpledStore = () => {
     const { appState, user, projects, tasks, timeState } = useSelector(store => store)
-    const { userId, isLoading, isAddFormOn } = appState
-    const { offset, currentDate, selectedDate, selectedWeek } = timeState
+    const { userId, isLoading, isAddFormOn, timeUpdate } = appState
+    const { offset, activeTaskId, currentDate, selectedDate, selectedWeek } = timeState
     const dispatch = useDispatch()
     return {
         appState,
         userId,
         isLoading,
         isAddFormOn,
+        timeUpdate,
         user,
         projects,
         tasks,
         timeState,
         offset,
+        activeTaskId,
         currentDate,
         selectedDate,
         selectedWeek,
@@ -37,18 +39,59 @@ export const useUpdate = () => {
         await dispatch(asyncGetProjects(projectsId))
         await dispatch(asyncGetTasks(tasksId))
         dispatch(loadingData(false))
-      }
+    }
+    const getUpdate = async () => {
+        const { projectsId, tasksId } = await dispatch(asyncGetUser(userId))
+        await dispatch(asyncGetProjects(projectsId))
+        await dispatch(asyncGetTasks(tasksId))
+    }
+    const getUpdateCurrent = async (getFunc, currentId) => {
+        await dispatch(getFunc(currentId))
+    }
 
     return {
-        getData
+        getData,
+        getUpdate,
+        getUpdateCurrent
     }
 }
 
+export const stopTracking = async ( user, userId, getDateString, axiosHandler, getUpdate ) => {
+    try {
+        const { startTime, entryNumber } = user.activeEntry
+        const addition = Math.round( (Date.now() - startTime) / msPerMin )
+        const currentDateString = getDateString()
+        const timesSheet = user.timesSheets[currentDateString]
+        const newTimesSheet = timesSheet.map((item, index) => {
+            if (entryNumber === index) return {...item, totalTime: item.totalTime + addition}
+            return item
+        })
+        let urlEnd = `/users/${userId}/timesSheets/${currentDateString}.json`
+        await axiosHandler.put(urlEnd, newTimesSheet)
+        urlEnd = `/users/${userId}/activeEntry.json`
+        await axiosHandler.delete(urlEnd)
+        await getUpdate()
+    } catch(e) {
+        console.log('Не могу записать newTimesSheet (stopTracking): ', e)
+    }
+}
+
+export const getAddition = ( user, selectedWeek, timesSheetId = false ) => {
+    const isActive = (
+        user.activeEntry &&     //Что есть активные записи
+        selectedWeek.indexOf(user.activeEntry?.timesSheetId) !== -1     //Активная запись входит в текущую неделю
+    )
+    if (timesSheetId && timesSheetId !== user.activeEntry?.timesSheetId) return 0  //Если передали timesSheetId, то обязано быть совпадение
+    if (isActive) return Math.round( (Date.now() - user.activeEntry?.startTime) / msPerMin )
+    return 0
+}
+
 export const msPerDay = 1000*3600*24
+export const msPerMin = 1000*60
 
 export const getDate = (offset) => {
     const shortDays = [
-        ,
+        null,
         'Пн',
         'Вт',
         'Ср',
@@ -58,7 +101,7 @@ export const getDate = (offset) => {
         'Вс'
     ]
     const days = [
-        ,
+        null,
         'Понедельник',
         'Вторник',
         'Среда',

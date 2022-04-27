@@ -1,44 +1,52 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Route, Routes} from 'react-router-dom'
-import { useSimpledStore } from './functions/functions'
+import { useSimpledStore, useUpdate } from './functions/functions'
 import Time from './components/Main/Time/Time'
 import Home from './components/Main/Home/Home'
 import Projects from './components/Main/Projects/Projects'
 import './App.css'
-import { asyncGetUser } from './redux/actions/userActions'
-import { asyncGetProjects } from './redux/actions/projectActions'
-import { asyncGetTasks } from './redux/actions/taskActions'
-import { loadingData } from './redux/actions/appStateActions/appStateActions'
-import axiosHandler from './axios/axiosHandler'
-import { user } from './initialState'
+// import axiosHandler from './axios/axiosHandler'
+// import { user } from './initialState'
 import Layout from './components/hoc/Layout/Layout'
+import { asyncGetUser } from './redux/actions/userActions'
+import { setTimeUpdate } from './redux/actions/appStateActions/appStateActions'
 
 function App() {
 
   const userId = '-N0KopPM_ruX0sSk49Ni'
   
-  const { dispatch } = useSimpledStore()
+  const [timeUpdate, setTimeUpdate] = useState(0)
+  const { getData, getUpdateCurrent } = useUpdate()
+  // const { timeUpdate, dispatch } = useSimpledStore()
 
-  async function addUser(item) {
-    try {
-      await axiosHandler.post('/users.json', item)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // async function addUser(item) {
+  //   try {
+  //     await axiosHandler.post('/users.json', item)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
-  const getData = async () => {
-    dispatch(loadingData(true))
-    const { projectsId, tasksId } = await dispatch(asyncGetUser(userId))
-    await dispatch(asyncGetProjects(projectsId))
-    await dispatch(asyncGetTasks(tasksId))
-    dispatch(loadingData(false))
-  }
+//   const currentTime = new Date().getSeconds
 
+//   setInterval(() => {
+//     if (true) {
+//       const currentTime = Date.now()
+//       // getUpdateCurrent(asyncGetUser, userId)
+//       setTimeUpdate()
+//       // dispatch(setTimeUpdate(currentTime))
+//     }
+//   }, 10000);
+// console.log('render app')
   useEffect(() => {
     // axiosHandler.put('/users/-N0KopPM_ruX0sSk49Ni.json', user)
     getData()
-  }, [userId])
+    
+  }, [timeUpdate])
+
+  // setInterval(() => {
+  //   update()
+  // }, 200000);
 
   // useEffect(() => {  //Добавить данные в БД
   //   addUser(user)
