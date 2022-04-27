@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { getFormatTime, getTimeNumber, controlTime, useSimpledStore, getDateString, useUpdate, changeActiveEntry, stopTracking } from '../../../functions/functions'
-import { offAddForm } from '../../../redux/actions/appStateActions/appStateActions'
+import { offAddForm, offEditForm } from '../../../redux/actions/appStateActions/appStateActions'
 import axiosHandler from '../../../axios/axiosHandler'
 import TextItem from '../../TextItem/TexItem'
 import ButtonForm from '../ButtonForm/ButtonForm'
@@ -49,12 +49,6 @@ const EditTaskForm = ({ closeFormHandler, index }) => {
         setState(newValue)
     }
 
-    const deleteHandler = (event, setState, control) => {
-        // const newValue = event.target.value
-        // if (control && !control(newValue)) return
-        // setState(newValue)
-    }
-
     const blurHandler = () => {
         const timeNumber = getTimeNumber(timeString)
         const newTimeString = getFormatTime(timeNumber)
@@ -63,8 +57,8 @@ const EditTaskForm = ({ closeFormHandler, index }) => {
 
     const createEntry = async (newTimesSheet, currentDateString) => {
         try {
-            await changeActiveEntry( offset, user, userId, getDateString, axiosHandler )
             const urlEnd = `/users/${userId}/timesSheets/${currentDateString}.json`
+            await axiosHandler.delete(urlEnd)
             await axiosHandler.put(urlEnd, newTimesSheet)
             getUpdateCurrent(asyncGetUser, userId)
         } catch(e) {
@@ -82,13 +76,20 @@ const EditTaskForm = ({ closeFormHandler, index }) => {
             totalTime: getTimeNumber(timeString)
         }
         const currentDateString = getDateString(offset)
-        let TimesSheet = user.timesSheets[currentDateString] || []    //Начальное значение массива, при любом смещении
-        if ( !offset && user.activeEntry && index === user.activeEntry.entryNumber ) {   //Если запись добавляют сегодня и если уже была активная,
-            TimesSheet = await stopTracking( user, userId, getDateString, axiosHandler, getUpdate ) //то нужно ее разактивировать и переписать ее время, вернув новый массив
-        }
-        const newTimesSheet = [...TimesSheet, newEntry]
+        const timesSheet = user.timesSheets[currentDateString] || []    //Начальное значение массива, при любом смещении
+        const newTimesSheet = timesSheet.map((item, i) => (i === index) ? newEntry : item )
         await createEntry(newTimesSheet, currentDateString)
-        dispatch(offAddForm())
+        dispatch(offEditForm())
+    }
+
+    const deleteHandler = async () => {
+        console.log('delete ', index)
+        const currentDateString = getDateString(offset)
+        const timesSheet = user.timesSheets[currentDateString] || []    //Начальное значение массива, при любом смещении
+        const newTimesSheet = timesSheet.filter((item, i) => (i !== index) )
+        console.log('newTimesSheet ', newTimesSheet)
+        await createEntry(newTimesSheet, currentDateString)
+        dispatch(offEditForm())
     }
 
     return (
