@@ -5,18 +5,20 @@ import axiosHandler from '../../../axios/axiosHandler'
 import TextItem from '../../TextItem/TexItem'
 import ButtonForm from '../ButtonForm/ButtonForm'
 import Select from '../Select/Select'
-import './AddTaskForm.css'
+import './EditTaskForm.css'
 import { asyncGetUser } from '../../../redux/actions/userActions'
 
-const AddTaskForm = ({ closeFormHandler }) => {
+const EditTaskForm = ({ closeFormHandler, index }) => {
 
     const { userId, user, projects, tasks, offset, selectedDate, dispatch } = useSimpledStore()
     const { getUpdate, getUpdateCurrent } = useUpdate()
 
-    const [currentProjectId, setCurrentProjectId] = useState(user.projectsId[0])
-    const [currentTaskId, setCurrentTaskId] = useState(user.tasksId[0])
-    const [description, setDescription] = useState('')
-    const [timeString, setTimeString] = useState('')
+    const currentEntry = user.timesSheets[getDateString(offset)][index]
+
+    const [currentProjectId, setCurrentProjectId] = useState(currentEntry.projectId)
+    const [currentTaskId, setCurrentTaskId] = useState(currentEntry.taskId)
+    const [description, setDescription] = useState(currentEntry.description)
+    const [timeString, setTimeString] = useState(getFormatTime(currentEntry.totalTime))
    
     const getTextItem = (keyName, name, client) => {
         if (keyName) return `[${keyName}] ${name} (${client})`
@@ -38,13 +40,19 @@ const AddTaskForm = ({ closeFormHandler }) => {
     })
 
     const getText = () => {
-        return `Новая запись на ${selectedDate.day.toLowerCase()}, ${selectedDate.dayOfMonth} ${selectedDate.monthDayShort.toLowerCase()}`
+        return `Редактировать запись на ${selectedDate.day.toLowerCase()}, ${selectedDate.dayOfMonth} ${selectedDate.monthDayShort.toLowerCase()}`
     }
 
     const changeHandler = (event, setState, control) => {
         const newValue = event.target.value
         if (control && !control(newValue)) return
         setState(newValue)
+    }
+
+    const deleteHandler = (event, setState, control) => {
+        // const newValue = event.target.value
+        // if (control && !control(newValue)) return
+        // setState(newValue)
     }
 
     const blurHandler = () => {
@@ -75,7 +83,7 @@ const AddTaskForm = ({ closeFormHandler }) => {
         }
         const currentDateString = getDateString(offset)
         let TimesSheet = user.timesSheets[currentDateString] || []    //Начальное значение массива, при любом смещении
-        if ( !offset && user.activeEntry) {   //Если запись добавляют сегодня и если уже была активная,
+        if ( !offset && user.activeEntry && index === user.activeEntry.entryNumber ) {   //Если запись добавляют сегодня и если уже была активная,
             TimesSheet = await stopTracking( user, userId, getDateString, axiosHandler, getUpdate ) //то нужно ее разактивировать и переписать ее время, вернув новый массив
         }
         const newTimesSheet = [...TimesSheet, newEntry]
@@ -117,27 +125,23 @@ const AddTaskForm = ({ closeFormHandler }) => {
                         onChange={(e) => changeHandler(e, setTimeString, controlTime)}
                         onBlur={blurHandler}
                     />
-                    {
-                        offset
-                            ? <ButtonForm
-                                classType='success'
-                                type='submit'
-                                clickHandler={submitHandler}
-                            >
-                                <TextItem classes={['color-white']} text='Добавить запись' />
-                            </ButtonForm>
-                            : <ButtonForm
-                                classType='success'
-                                type='submit'
-                                clickHandler={submitHandler}
-                            >
-                                <TextItem classes={['color-white']} text='Запустить таймер' />
-                            </ButtonForm>
-                    }
+                    <ButtonForm
+                        classType='success'
+                        type='submit'
+                        clickHandler={submitHandler}
+                    >
+                        <TextItem classes={['color-white']} text='Редактировать запись' />
+                    </ButtonForm>
                     <ButtonForm
                         clickHandler={closeFormHandler}
                     >
                         <TextItem text='Отмена' />
+                    </ButtonForm>
+                    <ButtonForm
+                        classType='delete'
+                        clickHandler={deleteHandler}
+                    >
+                        <TextItem text='Удалить' />
                     </ButtonForm>
                 </form>
             </div>
@@ -145,4 +149,4 @@ const AddTaskForm = ({ closeFormHandler }) => {
     )
 }
 
-export default AddTaskForm
+export default EditTaskForm

@@ -1,20 +1,20 @@
 import React from 'react'
+import images from '../../../../../img/img'
 import Button from '../../../../../UI/Button/Button'
 import LeftRightBtn from '../../../../../UI/LeftRightBtn/LeftRightBtn'
 import './TableHeaderRight.css'
 
 const TableHeaderRight = () => {
 
-    const btnProps = {  //Параметры кнопки, чтоб удобно распространить в компонент
-        content: {
-            title: '', img: {name: 'calendarLogo', alt: 'Calendar'}
-        },
-        classType: 'calendar'
-    }
+    
 
     return (
         <div className='table-header-right' >
-            <Button {...btnProps} />
+            <Button
+                classType='calendar'
+            >
+                <img src={images.calendarLogo} alt='Calendar' />
+            </Button>
             <LeftRightBtn classType='day-week' />
         </div>
     )

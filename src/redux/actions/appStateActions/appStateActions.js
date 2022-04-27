@@ -1,4 +1,4 @@
-import { LOADING_DATA, ON_ADD_FORM, OFF_ADD_FORM, SET_TIME_UPDATE } from "../../types/appStateTypes/appStateTypes"
+import { LOADING_DATA, ON_ADD_FORM, OFF_ADD_FORM, ON_EDIT_FORM, OFF_EDIT_FORM } from "../../types/appStateTypes/appStateTypes"
 
 export const loadingData = (boolean) => ({
     type: LOADING_DATA,
@@ -15,7 +15,13 @@ export const offAddForm = () => ({
     payload: false
 })
 
-export const setTimeUpdate = (currentTime) => ({
-    type: SET_TIME_UPDATE,
-    payload: currentTime
+export const onEditForm = (index) => ({
+    type: ON_EDIT_FORM,
+    payload: true,
+    index
+})
+
+export const offEditForm = () => ({
+    type: OFF_EDIT_FORM,
+    payload: false
 })

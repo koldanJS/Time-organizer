@@ -4,9 +4,14 @@ import { asyncGetProjects } from '../redux/actions/projectActions'
 import { asyncGetTasks } from '../redux/actions/taskActions'
 import { asyncGetUser } from '../redux/actions/userActions'
 
+// Quiz.js  //Использовать, чтоб подсвечивать вкладки, соответствующие пути
+// import {useLocation} from 'react-router-dom'
+// const location = useLocation()
+// const path = location.pathname.replace('/quiz', '')
+
 export const useSimpledStore = () => {
     const { appState, user, projects, tasks, timeState } = useSelector(store => store)
-    const { userId, isLoading, isAddFormOn, timeUpdate } = appState
+    const { userId, isLoading, isAddFormOn, isEditFormOn, timeUpdate } = appState
     const { offset, activeTaskId, currentDate, selectedDate, selectedWeek } = timeState
     const dispatch = useDispatch()
     return {
@@ -14,6 +19,7 @@ export const useSimpledStore = () => {
         userId,
         isLoading,
         isAddFormOn,
+        isEditFormOn,
         timeUpdate,
         user,
         projects,
@@ -56,6 +62,24 @@ export const useUpdate = () => {
     }
 }
 
+export const changeActiveEntry = async ( offset, user, userId, getDateString, axiosHandler, getUpdate, index = -1 ) => {
+    try {
+        //Для активной записи можно при рендеринге всегда писать время total + Date.now() - startTime
+        //lastActiveEntry
+        //Общее событие stopTracking - срабатывает при нажатии СТОП и при том, если во время рендеринга окажется, что dateString не за сегодня
+        //Каждую минуту будет происходить ререндеринг(если есть активная запись), при этом и все условия будут перепроверяться и время в активной записи обновляться
+        if (!offset) {
+            const newEntryNumber = (index < 0) ? (user.timesSheets[getDateString()]?.length || 0) : index
+            const newActiveEntry = { entryNumber: newEntryNumber, timesSheetId: getDateString(), startTime: Date.now() }
+            const urlEnd = `/users/${userId}/activeEntry.json`
+            await axiosHandler.put(urlEnd, newActiveEntry)
+            if (getUpdate) await getUpdate()
+        }
+    } catch(e) {
+        console.log('Не могу записать newActiveEntry: ', e)
+    }
+}
+
 export const stopTracking = async ( user, userId, getDateString, axiosHandler, getUpdate ) => {
     try {
         const { startTime, entryNumber } = user.activeEntry
@@ -71,6 +95,7 @@ export const stopTracking = async ( user, userId, getDateString, axiosHandler, g
         urlEnd = `/users/${userId}/activeEntry.json`
         await axiosHandler.delete(urlEnd)
         await getUpdate()
+        return newTimesSheet
     } catch(e) {
         console.log('Не могу записать newTimesSheet (stopTracking): ', e)
     }
