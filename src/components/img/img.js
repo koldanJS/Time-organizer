@@ -9,6 +9,7 @@ import homeLogo from '../../img/svg/home-logo.svg'
 import strike from '../../img/svg/strike.svg'
 import timerLogoWhite from '../../img/svg/timer-logo-white.svg'
 import timerLogo from '../../img/svg/timer-logo.svg'
+import authLogo from '../../img/auth-logo.png'
 
 const images = {
     addLogo,
@@ -21,7 +22,8 @@ const images = {
     homeLogo,
     strike,
     timerLogoWhite,
-    timerLogo
+    timerLogo,
+    authLogo
 }
 
 export default images

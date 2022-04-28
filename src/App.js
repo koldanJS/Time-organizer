@@ -1,25 +1,26 @@
 import React, {useEffect} from 'react'
 import {Route, Routes} from 'react-router-dom'
-import { useUpdate } from './functions/functions'
+import { useSimpledStore, useUpdate } from './functions/functions'
+import Layout from './components/hoc/Layout/Layout'
+import Auth from './components/Auth/Auth'
 import Time from './components/Main/Time/Time'
 import Home from './components/Main/Home/Home'
 import Projects from './components/Main/Projects/Projects'
 import './App.css'
 // import axiosHandler from './axios/axiosHandler'
 // import { user } from './initialState'
-import Layout from './components/hoc/Layout/Layout'
 
 function App() {
 
-  const userId = '-N0KopPM_ruX0sSk49Ni'
+  const { isAuthorized, userId } = useSimpledStore()
 
   const { getData } = useUpdate()
 
-  useEffect(() => {
-    // axiosHandler.put('/users/-N0KopPM_ruX0sSk49Ni.json', user)
-    getData()
+  // useEffect(() => {
+  //   // axiosHandler.put('/users/-N0KopPM_ruX0sSk49Ni.json', user)
+  //   getData()
     
-  }, [userId])
+  // }, [userId])
 
   console.log('render app ')
 
@@ -36,14 +37,16 @@ function App() {
   // }, [Date.now()])
 
   return (
-    <Layout >
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/time' element={<Time />} />
-        <Route path='/projects' element={<Projects />} />
-      </Routes>
-    </Layout>
-  );
+    isAuthorized
+      ? <Layout >
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/time' element={<Time />} />
+            <Route path='/projects' element={<Projects />} />
+          </Routes>
+        </Layout>
+      : <Auth />
+  )
 }
 
 export default App;

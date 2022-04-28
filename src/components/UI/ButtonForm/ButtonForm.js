@@ -1,20 +1,21 @@
 import React from 'react'
 import './ButtonForm.css'
 
-function ButtonForm(props) {
+function ButtonForm({ classType, clickHandler, disabled, type, ...props }) {
 
     const classList = [
         'Button',
-        props.classType
+        classType
     ]
 
     return (
         <button
-            onClick={props.clickHandler}
-            className={classList.join(' ')}
-            disabled={props.disabled}
+            type={ type }
+            onClick={ clickHandler }
+            className={ classList.join(' ') }
+            disabled={ disabled }
         >
-            {props.children}
+            { props.children }
         </button>
     )
 }

@@ -8,30 +8,3 @@ header {
     margin: 0;
     padding: 0;
 }
-.header-item:hover {
-    background-color: #D782FF;
-}
-.header-item a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 180px;
-    height: 50px;
-    text-decoration: none;
-}
-.header-item button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 180px;
-    height: 50px;
-    background-color: transparent;
-    border: none;
-}
-.header-item.home img {
-    width: 32px;
-    height: 32px;
-}
-.header-item.home a {
-    width: 50px;
-}

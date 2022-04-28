@@ -17,7 +17,7 @@ const HeaderItem = ({ to, exact, label, classType, img }) => {
             <NavLink
                 to={to}
                 exact={exact}
-                className='text'
+                className={({ isActive }) => isActive ? 'text active' : 'text'}
             >
                 { getContent() }
             </NavLink>

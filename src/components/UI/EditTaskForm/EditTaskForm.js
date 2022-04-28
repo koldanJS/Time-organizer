@@ -129,17 +129,18 @@ const EditTaskForm = ({ closeFormHandler, index }) => {
                     <ButtonForm
                         classType='success'
                         type='submit'
-                        clickHandler={submitHandler}
                     >
                         <TextItem classes={['color-white']} text='Редактировать запись' />
                     </ButtonForm>
                     <ButtonForm
+                        type='button'
                         clickHandler={closeFormHandler}
                     >
                         <TextItem text='Отмена' />
                     </ButtonForm>
                     <ButtonForm
                         classType='delete'
+                        type='button'
                         clickHandler={deleteHandler}
                     >
                         <TextItem text='Удалить' />

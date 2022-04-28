@@ -11,11 +11,12 @@ import { asyncGetUser } from '../redux/actions/userActions'
 
 export const useSimpledStore = () => {
     const { appState, user, projects, tasks, timeState } = useSelector(store => store)
-    const { userId, isLoading, isAddFormOn, isEditFormOn, timeUpdate } = appState
+    const { isAuthorized, userId, isLoading, isAddFormOn, isEditFormOn, timeUpdate } = appState
     const { offset, activeTaskId, currentDate, selectedDate, selectedWeek } = timeState
     const dispatch = useDispatch()
     return {
         appState,
+        isAuthorized,
         userId,
         isLoading,
         isAddFormOn,

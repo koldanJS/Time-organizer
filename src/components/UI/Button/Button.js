@@ -1,20 +1,20 @@
 import React from 'react'
 import './Button.css'
 
-const Button = (props) => {
+const Button = ({ classType, clickHandler, disabled, ...props }) => {
 
     const classList = [
         'btn',
-        props.classType
+        classType
     ]
 
     return (
         <button
-            onClick={props.clickHandler}
-            className={classList.join(' ')}
-            disabled={props.disabled}
+            onClick={ clickHandler }
+            className={ classList.join(' ') }
+            disabled={ disabled }
         >
-            {props.children}
+            { props.children }
         </button>
     )
 }

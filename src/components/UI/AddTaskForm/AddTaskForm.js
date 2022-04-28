@@ -95,14 +95,12 @@ const AddTaskForm = ({ closeFormHandler }) => {
                         value={currentProjectId}
                         onChange={e => changeHandler(e, setCurrentProjectId)}
                         options={getProjectsOptions()}
-                        classType=''
                     />
                     <Select
                         label='Задача'
                         value={currentTaskId}
                         onChange={e => changeHandler(e, setCurrentTaskId)}
                         options={getTasksOptions(currentProjectId)}
-                        classType=''
                     />
                     <input
                         className='description text'
@@ -119,24 +117,14 @@ const AddTaskForm = ({ closeFormHandler }) => {
                     />
                     {
                         offset
-                            ? <ButtonForm
-                                classType='success'
-                                type='submit'
-                                clickHandler={submitHandler}
-                            >
+                            ? <ButtonForm classType='success' type='sybmit' >
                                 <TextItem classes={['color-white']} text='Добавить запись' />
                             </ButtonForm>
-                            : <ButtonForm
-                                classType='success'
-                                type='submit'
-                                clickHandler={submitHandler}
-                            >
+                            : <ButtonForm classType='success' type='sybmit' >
                                 <TextItem classes={['color-white']} text='Запустить таймер' />
                             </ButtonForm>
                     }
-                    <ButtonForm
-                        clickHandler={closeFormHandler}
-                    >
+                    <ButtonForm type='button' clickHandler={closeFormHandler} >
                         <TextItem text='Отмена' />
                     </ButtonForm>
                 </form>

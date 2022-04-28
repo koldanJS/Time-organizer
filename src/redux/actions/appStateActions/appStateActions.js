@@ -1,4 +1,10 @@
-import { LOADING_DATA, ON_ADD_FORM, OFF_ADD_FORM, ON_EDIT_FORM, OFF_EDIT_FORM } from "../../types/appStateTypes/appStateTypes"
+import { SET_AUTORIZED, LOADING_DATA, ON_ADD_FORM, OFF_ADD_FORM, ON_EDIT_FORM, OFF_EDIT_FORM } from "../../types/appStateTypes/appStateTypes"
+
+export const setAutorized = (boolean, userId) => ({
+    type: SET_AUTORIZED,
+    payload: boolean,
+    userId
+})
 
 export const loadingData = (boolean) => ({
     type: LOADING_DATA,
