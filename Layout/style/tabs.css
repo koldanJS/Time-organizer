@@ -1,0 +1,18 @@
+.tabs {
+    display: flex;
+    height: 50px;
+}
+.tab-item {
+    box-sizing: border-box;
+    padding: 0 15px;
+    padding-top: 15px;
+}
+.tab-item:hover {
+    border-bottom: 3px solid #CE6AFD;
+}
+.tab-item.active {
+    border-bottom: 3px solid #CE6AFD;
+}
+.tab-item a {
+    text-decoration: none;
+}

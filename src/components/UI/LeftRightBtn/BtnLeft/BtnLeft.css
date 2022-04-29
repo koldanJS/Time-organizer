@@ -1,0 +1,32 @@
+.btn-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 34px;
+    margin-right: 1px;
+    text-decoration: none;
+    border: 1px solid gray;
+    border-right: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+}
+.btn-left.arrow {
+    width: 36px;
+}
+.btn-left.day {
+    width: 60px;
+}
+.btn-left.day.active {
+    border: 1px solid #CE6AFD;
+    border-right: none;
+    background-color: #EECBFF;
+}
+.btn-left.day.active {
+    cursor: auto;
+}
+.btn-left:hover {
+    border: 1px solid #CE6AFD;
+    border-right: none;
+}

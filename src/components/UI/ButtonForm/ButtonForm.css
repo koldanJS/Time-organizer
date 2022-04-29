@@ -1,0 +1,54 @@
+.Button {
+    display: inline-block;
+    border-radius: 8px;
+    border: 1px solid #bebebe;
+    box-sizing: border-box;
+    background-color: white;
+    color: #000;
+    padding: 7px 15px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.Button:focus {
+    outline: none;
+}
+.Button:hover {
+    border: 1px solid black;
+}
+.Button:active {
+    background-color: rgb(245, 245, 245);
+    box-shadow: inset 2px 2px 1px rgba(0, 0, 0, .1);
+}
+.Button.success {
+    border: 1px solid green;
+    background-color: rgb(0, 148, 0);
+}
+.Button.success:hover {
+    background-color: green;
+}
+.Button.success:active {
+    background-color: rgb(0, 110, 0);
+    box-shadow: inset 2px 2px 1px rgba(0, 0, 0, .1);
+}
+.Button.delete {
+    border: 1px solid red;
+    background-color: rgb(255, 68, 68);
+    margin-left: 20px;
+}
+.Button.delete:hover {
+    background-color: rgb(207, 0, 0);
+}
+.Button.delete:active {
+    background-color: rgb(184, 0, 0);
+    box-shadow: inset 2px 2px 1px rgba(0, 0, 0, .1);
+}
+.Button.sign {
+    width: 450px;
+    margin: 0;
+}
+
+/* .Button:disabled {
+    background-color: #ccc;
+    color: #000;
+    cursor: not-allowed;
+} */
