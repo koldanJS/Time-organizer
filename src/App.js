@@ -5,6 +5,7 @@ import Auth from './components/Auth/Auth'
 import Time from './components/Main/Time/Time'
 import Home from './components/Main/Home/Home'
 import Projects from './components/Main/Projects/Projects'
+import NewProject from './components/Main/Projects/NewProject/NewProject'
 import './App.css'
 // import axiosHandler from './axios/axiosHandler'
 // import { user } from './initialState'
@@ -47,6 +48,11 @@ function App() {
         <Route path='/projects' element={
           <Layout>
             <Projects />
+          </Layout>
+        } />
+        <Route path='/projects/new' element={
+          <Layout>
+            <NewProject />
           </Layout>
         } />
         <Route path='/auth' element={<Auth />} />

@@ -15,7 +15,7 @@ const Home = () => {
         }
      })
 
-     const userName = user.info.firstName
+     const userName = user?.info?.firstName
 
     return (
         <div className='home-page' >
