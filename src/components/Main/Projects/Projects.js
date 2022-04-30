@@ -43,7 +43,7 @@ const Projects = () => {
             </ul>
             <ul className='projects-lits' >
                 {
-                    projectsId?.map( id => <ProjectItem key={ id } id={id} /> )
+                    projectsId?.map( id => <ProjectItem key={ id } id={id} /> ) //Редактироваться должен только 1 проект разом, что можно сделать через состояние здесь
                 }
             </ul>
         </div>
