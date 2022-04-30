@@ -100,6 +100,7 @@ const ProjectItem = ({ id }) => {
                 return `/tasks/${id}.json`
             })
             const promises = tasksUrls.map((url, index) => axiosHandler.put(url, tasksArr[index]))
+
             const newProject = {
                 createdBy: userId,
                 createdTime: Date.now(),
@@ -107,17 +108,22 @@ const ProjectItem = ({ id }) => {
                 projectName,
                 tasksId: updatedTasksId
             }
-            const newSet = new Set()
 
             let userTasksId = [...user.tasksId]    //Получили весь старый массив id задач для редактирования у user
             const projectTasksId = [...projects[id].tasksId]    //Получили весь старый массив id задач для сверки у project
-            userTasksId.filter(id => !projectTasksId.includes(id))  //Вычли из масива user старые задачи, входящие в project
+            userTasksId = userTasksId.filter(id =>  !projectTasksId.includes(id))  //Вычли из масива user старые задачи, входящие в project
             userTasksId = [...userTasksId, ...updatedTasksId]   //Положили в массив user новые id задач из project
+
+            const deletedId = projectTasksId.filter(id => !updatedTasksId.includes(id))   //Нашли все id удаленных задач
+            const deletedUrls = deletedId.map(id => `/tasks/${id}.json` )   //Сформировали по ним массив ссылок
+            const deletedPromises = deletedUrls.map(url => axiosHandler.delete(url))    //А далее массив промисов
+
             try {
-                await Promise.all(promises)
-                await axiosHandler.put(`/projects/${id}.json`, newProject)
-                await axiosHandler.put(`/users/${userId}/tasksId.json`, userTasksId)
-                await getUpdate()
+                await Promise.all(promises) //Добавили разом все задачи из обновленного массива задач
+                await Promise.all(deletedPromises)  //Удалили разом все задачи, что были удалены в проекте
+                await axiosHandler.put(`/projects/${id}.json`, newProject)  //Добавили в БД отредактированный проект
+                await axiosHandler.put(`/users/${userId}/tasksId.json`, userTasksId)    //Заменили список задач у user
+                await getUpdate()   //Обновили данные состояния приложения
             } catch(e) {
                 console.log('saveChanges(put tasks or changed project)', e)
             }
