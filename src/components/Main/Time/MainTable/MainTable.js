@@ -12,7 +12,7 @@ import EditTaskForm from '../../../UI/EditTaskForm/EditTaskForm'
 
 const MainTable = () => {
 
-    const [timeUpdate, setTimeUpdate] = useState(0)
+    const [setTimeUpdate] = useState(0)
     const { user, userId, isAddFormOn, isEditFormOn, dispatch } = useSimpledStore()
     const { getUpdate } = useUpdate()
 
@@ -21,7 +21,7 @@ const MainTable = () => {
             if (user?.activeEntry?.timesSheetId !== getDateString()) {  //Если начался новый день
                 stopTracking( user, userId, getDateString, axiosHandler, getUpdate, 'tomorrow' )    //Выключить активную запись
             }
-            setTimeUpdate(Math.round(new Date().getSeconds()/20))   //Если есть активная запись, обновить таблицу
+            setTimeUpdate(Math.round(new Date().getSeconds()/30))   //Если есть активная запись, обновить таблицу каждые 30 сек
         }
       }, 20000);
       console.log('render mainTable ', new Date().getHours(), ':', new Date().getMinutes(), ':', new Date().getSeconds())

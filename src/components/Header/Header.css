@@ -8,3 +8,6 @@ header {
     margin: 0;
     padding: 0;
 }
+.header-item.menu {
+    z-index: 95;
+}

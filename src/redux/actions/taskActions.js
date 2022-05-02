@@ -1,19 +1,5 @@
-import {ADD_TASK, GET_TASK, GET_TASKS} from '../types/taskTypes'
+import {ADD_TASK, GET_TASKS} from '../types/taskTypes'
 import axiosHandler from '../../axios/axiosHandler'
-
-// const getTask = (taskId, task) => ({
-//     type: GET_TASK,
-//     payload: {taskId, task}
-// })
-
-// export function asyncGetTask(taskId) {
-//     return async dispatch => {
-//         console.log('getTask')
-//         const response = await axiosHandler.get(`/tasks/${taskId}.json`)
-//         const task = response.data
-//         dispatch(getTask(taskId, task))
-//     }
-// }
 
 const getTasks = (tasks) => ({
     type: GET_TASKS,
@@ -30,7 +16,6 @@ export function asyncGetTasks(tasksId) {
         tasksId.forEach((id, index) => {
             tasks[id] = tasksArr[index]
         })
-        // console.log('Promise.all - tasks', tasks)
         dispatch(getTasks(tasks))
     }
 }

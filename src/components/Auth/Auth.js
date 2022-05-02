@@ -1,20 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
 } from 'firebase/auth'
-import { setUser } from '../../redux/actions/appStateActions/appStateActions'
-import { useSimpledStore, newUser, useUpdate } from '../../functions/functions'
+import { reloadEnd, setUser } from '../../redux/actions/appStateActions/appStateActions'
+import { useSimpledStore, useUpdate, getNewUserData } from '../../functions/functions'
 import images from '../img/img'
 import './Auth.css'
 import AuthForm from '../UI/AuthForm/AuthForm'
 import axiosHandler from '../../axios/axiosHandler'
+import Loader from '../Loader/Loader'
 
 const Auth = () => {
 
-    const { dispatch } = useSimpledStore()
+    const { isAuth, isReload, userId, isLoading, dispatch } = useSimpledStore()
     const navigate = useNavigate()
     const [isRegistered, setIsRegistered] = useState(true)
     const { getData } = useUpdate()
@@ -36,7 +37,17 @@ const Auth = () => {
                 token: user.accessToken,
                 id: user.uid,
             }))
-            await axiosHandler.put(`/users/${user.uid}.json`, newUser)   //При регистрации создавать сначала нового пустого (с нач проектами) пользователя
+
+            const { newUser, project, projectId, tasks, tasksId } = getNewUserData(user.uid)
+            const createNewUserPromises = []
+            createNewUserPromises.push(axiosHandler.put(`/users/${user.uid}.json`, newUser))
+            createNewUserPromises.push(axiosHandler.put(`/projects/${projectId}.json`, project))
+            let index = 0
+            for (const id of tasksId) {
+                createNewUserPromises.push(axiosHandler.put(`/tasks/${id}.json`, tasks[index++]))
+            }
+            await Promise.all(createNewUserPromises)   //При регистрации создавать сначала нового пустого (с нач проектами) пользователя
+
             await getData(user.uid)
             navigate('/')
         } catch(e) {
@@ -62,27 +73,45 @@ const Auth = () => {
         }
     }
 
+    const authUpdate = async () => {
+        try {
+            dispatch(reloadEnd())
+            await getData(userId)
+            window.history.back()
+        } catch(e) {
+            console.log('login error ', e)
+        }
+    }
+
+    useEffect( () => {
+        if (isAuth && isReload) authUpdate()    //Если user авторизован и страница обновлена, заново загрузить данные из БД
+    })
+
     return (
-        <div className='auth' >
-            <img src={ images.appLogo } alt='Auth-logo' className='auth-logo' />
-            <div className='auth-items' >
-                <h1 className='auth-text text size-30 width-700' >Войдите в Time Organizer</h1>
-                {
-                     isRegistered
-                        ? <div className='register' >
-                            <p className='text' >Впервые здесь?</p>
-                            <a className='text' onClick={ clickToRegister } >зарегистрируйтесь</a>
-                        </div>
-                        : null
-                }
-                <AuthForm
-                    label={ isRegistered ? 'Войдите с логином и паролем' : 'Зарегистрируйтесь с логином и паролем' }
-                    buttonText={ isRegistered ? 'Войти' : 'Зарегистрироваться' }
-                    placeholders={{ email: 'Email...', password: 'Пароль...' }}
-                    submitHandler={ isRegistered ? login : register }
-                />
+        isLoading
+            ? <div className='auth-loader' >
+                <Loader />
             </div>
-        </div>
+            : <div className='auth' >
+                <img src={ images.appLogo } alt='Auth-logo' className='auth-logo' />
+                <div className='auth-items' >
+                    <h1 className='auth-text text size-30 width-700' >{ isRegistered ? 'Войдите в Time Organizer' : 'Зарегистрируйтесь в Time Organizer' }</h1>
+                    {
+                        isRegistered
+                            ? <div className='register' >
+                                <p className='text' >Впервые здесь?</p>
+                                <a className='text' onClick={ clickToRegister } >зарегистрируйтесь</a>
+                            </div>
+                            : null
+                    }
+                    <AuthForm
+                        label={ isRegistered ? 'Войдите с логином и паролем' : 'Зарегистрируйтесь с логином и паролем' }
+                        buttonText={ isRegistered ? 'Войти' : 'Зарегистрироваться' }
+                        placeholders={{ email: 'Email...', password: 'Пароль...' }}
+                        submitHandler={ isRegistered ? login : register }
+                    />
+                </div>
+            </div>
     )
 }
 

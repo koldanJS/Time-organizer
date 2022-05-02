@@ -24,6 +24,8 @@ const Header = () => {
         {to: '/projects', exact: 'false', label: 'Проекты', classType: 'tab', img: ''}
     ]
 
+    const closeDropDown = () => { sewIsDropDown(false) }
+
     return (
         <header>
             <div className='container'>
@@ -40,7 +42,7 @@ const Header = () => {
             </div>
             {
                 isDropDown
-                    ? <DropDown />
+                    ? <DropDown closeDropDown={ closeDropDown } />
                     : null
             }
         </header>

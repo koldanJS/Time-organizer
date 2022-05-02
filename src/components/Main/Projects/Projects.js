@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSimpledStore } from '../../../functions/functions'
 import ProjectItem from './ProjectItem/ProjectItem'
@@ -8,14 +8,8 @@ import './Projects.css'
 const Projects = () => {
 
     const navigate = useNavigate()
-    const { isAuth, user } = useSimpledStore()
+    const { user } = useSimpledStore()
     const projectsId = user.projectsId
-
-    useEffect(() => {
-        if (!isAuth){
-           return navigate("/auth");
-        }
-     });
 
     return (
         <div className='projects' >

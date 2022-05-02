@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSimpledStore } from '../../../functions/functions'
 import Header from '../../Header/Header'
-// import './Layout.css'
+import './Layout.css'
 
 const Layout = props => {
 
-    // const [menu, setMenu] = useState(false)
-    // const toggleMenuHandler = () => {
-    //     setMenu(!menu)
-    // }
-    // const menuCloseHandler = () => {
-    //     setMenu(false)
-    // }
+    const { isAuth, isReload } = useSimpledStore()
+    const navigate = useNavigate()
+
+    useEffect( () => {
+        if (!isAuth || isReload) navigate("/auth")
+    })
 
     return (
         <div className='Layout' >

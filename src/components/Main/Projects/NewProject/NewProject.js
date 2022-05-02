@@ -1,15 +1,9 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useSimpledStore } from '../../../../functions/functions'
-// import images from '../../img/img'
+import React from 'react'
 import './NewProject.css'
 
 const NewProject = () => {
 
-    const { isAuth } = useSimpledStore()
-    const navigate = useNavigate()
 
-    useEffect(() => { if (!isAuth) return navigate("/auth") })
 
     return (
         <div className='' >New Projects

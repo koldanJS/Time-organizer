@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
+import { v4 } from 'uuid'
 import { loadingData } from '../redux/actions/appStateActions/appStateActions'
 import { asyncGetProjects } from '../redux/actions/projectActions'
 import { asyncGetTasks } from '../redux/actions/taskActions'
@@ -11,7 +12,7 @@ import { asyncGetUser } from '../redux/actions/userActions'
 
 export const useSimpledStore = () => {
     const { appState, user, projects, tasks, timeState } = useSelector(store => store)
-    const { isAuth ,email, token, userId, isLoading, isAddFormOn, isEditFormOn, timeUpdate } = appState
+    const { isAuth ,email, token, userId, isLoading, isAddFormOn, isEditFormOn, isReload } = appState
     const { offset, activeTaskId, currentDate, selectedDate, selectedWeek } = timeState
     const dispatch = useDispatch()
     return {
@@ -23,7 +24,7 @@ export const useSimpledStore = () => {
         isLoading,
         isAddFormOn,
         isEditFormOn,
-        timeUpdate,
+        isReload,
         user,
         projects,
         tasks,
@@ -77,23 +78,57 @@ export const useUpdate = () => {
     }
 }
 
-export const newUser = {
-    info: {
-        firstName: 'User',
-        lastName: '',
-        email: '',
-        password: '',
-        dateOfBirth: '',
-        phoneNumber: '',
-        company: '',
-        photo: null,
-    },
-    projectsId: ['-N0G-0aJliVmC0VbYc8D'],
-    tasksId: ['-N0Fz6ZYH3b5uss0IvEb', '-N0FzAcRdvYvOw0i_x2_', '-N0FzCagpefDYUDYnzD1'],
-    activeEntry: null,
-    timesSheets: {},
-    pendingApproval: {},
-    archive: {}
+export const getNewUserData = (userId) => {
+    const projectId = v4()
+    const tasksId = [v4(), v4(), v4()]
+    const newUser = {
+        info: {
+            firstName: 'User',
+            lastName: '',
+            email: '',
+            dateOfBirth: '',
+            phoneNumber: '',
+            company: '',
+            photo: null,
+        },
+        projectsId: [projectId],
+        tasksId: tasksId,
+        activeEntry: null,
+        timesSheets: {},
+        pendingApproval: {},
+        archive: {}
+    }
+    const project = {
+        createdBy: userId,
+        createdTime: Date.now(),
+        description: 'Это простой проект для начала работы',
+        projectName: 'Стартовый проект',
+        tasksId
+    }
+    const tasks = [
+        {
+            createdBy: userId,
+            projectId,
+            taskName: 'Работа с документацией'
+        },
+        {
+            createdBy: userId,
+            projectId,
+            taskName: 'Работа над проектом'
+        },
+        {
+            createdBy: userId,
+            projectId,
+            taskName: 'Совещание'
+        }
+    ]
+    return {
+        newUser,
+        project,
+        projectId,
+        tasks,
+        tasksId
+    }
 }
 
 export const changeActiveEntry = async ( offset, user, userId, getDateString, axiosHandler, getUpdate, index = -1 ) => {

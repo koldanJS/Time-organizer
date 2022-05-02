@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSimpledStore } from '../../../functions/functions'
 import images from '../../img/img'
@@ -6,16 +6,10 @@ import './Home.css'
 
 const Home = () => {
 
-    const { isAuth, email, user } = useSimpledStore()
+    const { user } = useSimpledStore()
     const navigate = useNavigate()
 
-    useEffect(() => {
-        if (!isAuth){
-           return navigate("/auth")
-        }
-     })
-
-     const userName = user?.info?.firstName
+    const userName = user?.info?.firstName
 
     return (
         <div className='home-page' >
