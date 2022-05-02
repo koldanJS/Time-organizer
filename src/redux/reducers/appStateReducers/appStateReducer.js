@@ -1,7 +1,7 @@
 import { SET_USER, REMOVE_USER, LOADING_DATA, OFF_ADD_FORM, OFF_EDIT_FORM, ON_ADD_FORM, ON_EDIT_FORM, RELOAD_END } from "../../types/appStateTypes/appStateTypes"
 
 const initialState = {
-    isLoading: false,
+    isLoading: true,
     isAddFormOn: false,
     isEditFormOn: false,
     email: localStorage.getItem('email'),

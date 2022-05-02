@@ -1,11 +1,11 @@
 import React from 'react'
-import {Route, Routes} from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Layout from './components/hoc/Layout/Layout'
 import Auth from './components/Auth/Auth'
 import Time from './components/Main/Time/Time'
 import Home from './components/Main/Home/Home'
 import Projects from './components/Main/Projects/Projects'
-import NewProject from './components/Main/Projects/NewProject/NewProject'
+import EditUser from './components/Main/EditUser/EditUser'
 
 function App() {
 
@@ -28,9 +28,9 @@ function App() {
           <Projects />
         </Layout>
       } />
-      <Route path='/projects/new' element={
+      <Route path='/edit-user' element={
         <Layout>
-          <NewProject />
+          <EditUser />
         </Layout>
       } />
       <Route path='/auth' element={<Auth />} />

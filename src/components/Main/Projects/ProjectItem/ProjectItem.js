@@ -5,26 +5,25 @@ import { useSimpledStore, useUpdate } from '../../../../functions/functions'
 import images from '../../../img/img'
 import './ProjectItem.css'
 
-const ProjectItem = ({ id }) => {
+const ProjectItem = ({ projectId, isEdit, changeIsEdit }) => {
 
     const { getUpdate } = useUpdate()
     const { userId, user, projects, tasks } = useSimpledStore()
-    const [isEdit, setIsEdit] = useState(false)
     const [isAddTask, setIsAddTask] = useState(false)
-    const [projectName, setProjectName] = useState(projects[id].projectName)
-    const [description, setDescription] = useState(projects[id].description)
+    const [projectName, setProjectName] = useState(projects[projectId]?.projectName)
+    const [description, setDescription] = useState(projects[projectId]?.description)
     const [taskName, setTaskName] = useState('')
     const [updatedTasks, setUpdatedTasks] = useState(tasks)
-    const [updatedTasksId, setUpdatedTasksId] = useState(projects[id].tasksId)
+    const [updatedTasksId, setUpdatedTasksId] = useState(projects[projectId]?.tasksId)
 
     const getTasks = () => {
         return (
             updatedTasksId.map( id => {
                 return (
                     <li className='task-item' key={id}>
-                        <p className={ isEdit ? 'text' : 'text mar-r' } > { updatedTasks[id].taskName } </p>
+                        <p className={ (isEdit === projectId) ? 'text' : 'text mar-r' } > { updatedTasks[id].taskName } </p>
                         {
-                            isEdit
+                            (isEdit === projectId)
                                 ? <button onClick={ () => deleteTask(id) } >
                                     <img
                                         src={images.xLogo}
@@ -44,7 +43,7 @@ const ProjectItem = ({ id }) => {
         if (!taskName) alert('Имя задачи не должно быть пустым!')   //Если имя не введено и нажат Enter
         const newId = v4()  //Получаем шифрованный id
         setUpdatedTasksId([...updatedTasksId, newId])   //Добавляем в состояние
-        const newTask = { [newId]: { createdBy: userId, projectId: id, taskName } }
+        const newTask = { [newId]: { createdBy: userId, projectId, taskName } }
         const newTasks = { ...updatedTasks, ...newTask }    //Сформированную задачу добавляем к остальным
         setUpdatedTasks(newTasks)   //Обновляем состояние
         setIsAddTask(false) //И отключаем редактор
@@ -82,26 +81,26 @@ const ProjectItem = ({ id }) => {
         )
     }
 
-    const closeEdit = () => {
+    const cancelEdit = () => {
         setIsAddTask(false)
-        setProjectName(projects[id].projectName)
-        setDescription(projects[id].description)
+        setProjectName(projects[projectId].projectName)
+        setDescription(projects[projectId].description)
         setTaskName('')
         setUpdatedTasks(tasks)
-        setUpdatedTasksId(projects[id].tasksId)
-        setIsEdit(false)
+        setUpdatedTasksId(projects[projectId].tasksId)
+        changeIsEdit(false)
     }
 
     const saveChanges = async () => {
         if (projectName) {
             const tasksArr = []
-            const tasksUrls = updatedTasksId.map(id => {
+            const tasksUrls = updatedTasksId.map(id => {    //Создаем обновленный массив задач проекта и ссылок на них
                 tasksArr.push(updatedTasks[id])
                 return `/tasks/${id}.json`
             })
-            const promises = tasksUrls.map((url, index) => axiosHandler.put(url, tasksArr[index]))
+            const updatedTasksPromises = tasksUrls.map((url, index) => axiosHandler.put(url, tasksArr[index]))
 
-            const newProject = {
+            const newProject = {    //Создаем объект сохраняемого проекта
                 createdBy: userId,
                 createdTime: Date.now(),
                 description,
@@ -109,31 +108,61 @@ const ProjectItem = ({ id }) => {
                 tasksId: updatedTasksId
             }
 
+            //Нужно обновить список задач у user с учетом изменений текущего проекта ...
             let userTasksId = [...user.tasksId]    //Получили весь старый массив id задач для редактирования у user
-            const projectTasksId = [...projects[id].tasksId]    //Получили весь старый массив id задач для сверки у project
+            const projectTasksId = [...projects[projectId].tasksId]    //Получили весь старый массив id задач для сверки у project
             userTasksId = userTasksId.filter(id =>  !projectTasksId.includes(id))  //Вычли из масива user старые задачи, входящие в project
             userTasksId = [...userTasksId, ...updatedTasksId]   //Положили в массив user новые id задач из project
 
+            //Из БД нужно удалить все удаленные из проекта задачи, т.к. пока что они лишь вычеркнуты из списка у user и project
             const deletedId = projectTasksId.filter(id => !updatedTasksId.includes(id))   //Нашли все id удаленных задач
             const deletedUrls = deletedId.map(id => `/tasks/${id}.json` )   //Сформировали по ним массив ссылок
             const deletedPromises = deletedUrls.map(url => axiosHandler.delete(url))    //А далее массив промисов
 
             try {
-                await Promise.all(promises) //Добавили разом все задачи из обновленного массива задач
+                await Promise.all(updatedTasksPromises) //Добавили разом все задачи из обновленного массива задач
                 await Promise.all(deletedPromises)  //Удалили разом все задачи, что были удалены в проекте
-                await axiosHandler.put(`/projects/${id}.json`, newProject)  //Добавили в БД отредактированный проект
+                await axiosHandler.put(`/projects/${projectId}.json`, newProject)  //Добавили в БД отредактированный проект
                 await axiosHandler.put(`/users/${userId}/tasksId.json`, userTasksId)    //Заменили список задач у user
                 await getUpdate()   //Обновили данные состояния приложения
             } catch(e) {
                 console.log('saveChanges(put tasks or changed project)', e)
             }
             setIsAddTask(false)
-            setProjectName(projects[id].projectName)
-            setDescription(projects[id].description)
             setTaskName('')
-            setIsEdit(false)
+            changeIsEdit(false)
+        } else {
+            alert('Имя проекта не должно быть пустым!')
         }
-        alert('Имя проекта не должно быть пустым!')
+    }
+
+    const deleteProject = async () => {
+        //Нужно обновить список задач у user с учетом удаления текущего проекта ...
+        let userTasksId = [...user.tasksId]    //Получили весь старый массив id задач для редактирования у user
+        const projectTasksId = [...projects[projectId].tasksId]    //Получили весь старый массив id задач для сверки у project
+        userTasksId = userTasksId.filter(id => !projectTasksId.includes(id))  //Вычли из масива user старые задачи, входящие в project
+
+        //Нужно обновить список проектов у user с учетом удаления текущего проекта ...
+        let userProjectsId = [...user.projectsId]    //Получили весь старый массив id задач для редактирования у user
+        userProjectsId = userProjectsId.filter(id => id !== projectId)  //Вычли из масива user id удаляемого проекта
+
+        //Из БД нужно удалить проект и входящие в него задачи
+        const promises = []
+        promises.push(axiosHandler.delete(`/projects/${projectId}.json`))  //Добавили промис удаления проекта
+        projectTasksId.forEach(id => {
+            promises.push(axiosHandler.delete(`/tasks/${id}.json`))  //Добавили промисы удаления задач
+        })
+
+        try {
+            await Promise.all(promises) //Добавили разом проект и входящие в него задачи
+            await axiosHandler.put(`/users/${userId}/tasksId.json`, userTasksId)    //Заменили список задач у user
+            await axiosHandler.put(`/users/${userId}/projectsId.json`, userProjectsId)    //Заменили список проектов у user
+            await getUpdate()   //Обновили данные состояния приложения
+        } catch(e) {
+            console.log('saveChanges(delete project)', e)
+        }
+
+        changeIsEdit(false)
     }
 
     return (
@@ -141,7 +170,7 @@ const ProjectItem = ({ id }) => {
             <ul>
                 <li className='text editor' >
                     {
-                        isEdit
+                        (isEdit === projectId)
                             ? <>
                                 <button
                                     onClick={ saveChanges }
@@ -153,7 +182,7 @@ const ProjectItem = ({ id }) => {
                                     />
                                 </button>
                                 <button
-                                    onClick={ closeEdit }
+                                    onClick={ cancelEdit }
                                     className='cancel'
                                 >
                                     <img
@@ -163,7 +192,7 @@ const ProjectItem = ({ id }) => {
                                     />
                                 </button>
                                 <button
-                                    onClick={ () => setIsEdit(!isEdit) }
+                                    onClick={ deleteProject }
                                     className='trash'    
                                 >
                                     <img
@@ -172,7 +201,7 @@ const ProjectItem = ({ id }) => {
                                     />
                                 </button>
                             </>
-                            : <button onClick={ () => setIsEdit(!isEdit) } >
+                            : <button onClick={ () => changeIsEdit(projectId) } >
                                 <img
                                     src={images.editLogo}
                                     alt='Edit'
@@ -182,33 +211,33 @@ const ProjectItem = ({ id }) => {
                 </li>
                 <li>
                     {
-                        isEdit
+                        (isEdit === projectId)
                             ? <textarea
                                 className='edit-project text'
                                 value={ projectName }
                                 placeholder='Название проекта...'
                                 onChange={ (e) => setProjectName(e.target.value) }
                             />
-                            : <p className='text' > { projects[id].projectName } </p>
+                            : <p className='text' > { projects[projectId].projectName } </p>
                     }
                 </li>
                 <li className='text description' >
                     {
-                        isEdit
+                        (isEdit === projectId)
                             ? <textarea
                                 className='edit-project text'
                                 value={ description }
                                 placeholder='Описание проекта...'
                                 onChange={ (e) => setDescription(e.target.value) }
                             />
-                            : <p className='text' > { projects[id].description } </p>
+                            : <p className='text' > { projects[projectId].description } </p>
                     }
                 </li>
                 <li className='tasks' >
                     <ul className='tasks-list'>
                         { getTasks() }
                         {
-                            isEdit
+                            (isEdit === projectId)
                                 ? <li className='task-item' >
                                     {
                                         isAddTask

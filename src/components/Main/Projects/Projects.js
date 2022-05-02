@@ -1,21 +1,54 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
 import { useSimpledStore } from '../../../functions/functions'
 import ProjectItem from './ProjectItem/ProjectItem'
+import NewProjectItem from './NewProjectItem/NewProjectItem'
+import Loader from '../../Loader/Loader'
 import images from '../../img/img'
 import './Projects.css'
+import { v4 } from 'uuid'
 
 const Projects = () => {
 
-    const navigate = useNavigate()
-    const { user } = useSimpledStore()
+    const { user, isLoading } = useSimpledStore()
+
+    const [isAddNewProject, setIsAddNewProject] = useState(false)
+    const [isEdit, setIsEdit] = useState(false)
+    
     const projectsId = user.projectsId
+
+    const getItems = () => {
+        if (isLoading) return (
+            <div className='projects-loader' >
+                <Loader />
+            </div>
+        )
+        if (isAddNewProject) return (
+            <>
+                <NewProjectItem
+                    cancelProjectAddition={ () => setIsAddNewProject(false) }
+                    newProjectId={ v4() }
+                />
+                { projectsId.map( id => <ProjectItem
+                    key={ id }
+                    projectId={ id }
+                    isEdit={ isEdit }
+                    changeIsEdit={ setIsEdit }
+                /> ) }
+            </>
+        )
+        return projectsId.map( id => <ProjectItem
+            key={ id }
+            projectId={ id }
+            isEdit={ isEdit }
+            changeIsEdit={ setIsEdit }
+        /> )
+    }
 
     return (
         <div className='projects' >
             <button
                 className='new'
-                onClick={ () => navigate("/projects/new") }
+                onClick={ () => setIsAddNewProject(true) }
             >
                     <img
                         src={images.whitePlusLogo}
@@ -36,9 +69,7 @@ const Projects = () => {
                 <li className='text tasks' >Список задач</li>
             </ul>
             <ul className='projects-lits' >
-                {
-                    projectsId?.map( id => <ProjectItem key={ id } id={id} /> ) //Редактироваться должен только 1 проект разом, что можно сделать через состояние здесь
-                }
+                { getItems() }
             </ul>
         </div>
     )

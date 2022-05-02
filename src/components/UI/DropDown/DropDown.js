@@ -22,7 +22,7 @@ const DropDown = ({ closeDropDown }) => {
                     <p className='text size-16 company' >{ company }</p>
                 </div>
                 <div className='settings' >
-                    <button onClick={ () => navigate("/edit-user") } >
+                    <button onClick={ () => { navigate("/edit-user"); closeDropDown() } } >
                         <p className='text' >Мой профиль</p>
                     </button>
                 </div>

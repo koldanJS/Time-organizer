@@ -47,6 +47,9 @@
     width: 25px;
     height: 25px;
 }
+.projects-lits {
+    flex-direction: column;
+}
 .projects li {
     box-sizing: border-box;
     width: 24%;
@@ -61,4 +64,12 @@
 }
 .projects li.tasks {
     width: 30%;
+}
+.projects-loader {
+    display: flex;
+    justify-content: center;
+    background-color: #e7e7e7;
+    width: 100%;
+    padding: 150px 0;
+    margin-top: 20px;
 }

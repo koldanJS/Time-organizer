@@ -42,10 +42,9 @@ const Auth = () => {
             const createNewUserPromises = []
             createNewUserPromises.push(axiosHandler.put(`/users/${user.uid}.json`, newUser))
             createNewUserPromises.push(axiosHandler.put(`/projects/${projectId}.json`, project))
-            let index = 0
-            for (const id of tasksId) {
-                createNewUserPromises.push(axiosHandler.put(`/tasks/${id}.json`, tasks[index++]))
-            }
+            tasksId.forEach((id, index) => {
+                createNewUserPromises.push(axiosHandler.put(`/tasks/${id}.json`, tasks[index]))
+            })
             await Promise.all(createNewUserPromises)   //При регистрации создавать сначала нового пустого (с нач проектами) пользователя
 
             await getData(user.uid)
@@ -88,7 +87,7 @@ const Auth = () => {
     })
 
     return (
-        isLoading
+        isLoading && isAuth
             ? <div className='auth-loader' >
                 <Loader />
             </div>

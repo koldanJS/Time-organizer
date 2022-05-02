@@ -12,7 +12,7 @@ import EditTaskForm from '../../../UI/EditTaskForm/EditTaskForm'
 
 const MainTable = () => {
 
-    const [setTimeUpdate] = useState(0)
+    const [timeUpdate , setTimeUpdate] = useState(0)
     const { user, userId, isAddFormOn, isEditFormOn, dispatch } = useSimpledStore()
     const { getUpdate } = useUpdate()
 
