@@ -40,7 +40,8 @@ const ProjectItem = ({ projectId, isEdit, changeIsEdit, isAddNewProject, setMess
 
     const addTask = event => {
         if (event.code !== 'Enter') return //Срабатывает только на Enter
-        if (!taskName) alert('Имя задачи не должно быть пустым!')   //Если имя не введено и нажат Enter
+        if (!taskName) return setMessage('Имя задачи не должно быть пустым!')
+        if (taskName.length > 25) return setMessage('Имя задачи более 25 символов!')
         const newId = v4()  //Получаем шифрованный id
         setUpdatedTasksId([...updatedTasksId, newId])   //Добавляем в состояние
         const newTask = { [newId]: { createdBy: userId, projectId, taskName } }
@@ -92,48 +93,47 @@ const ProjectItem = ({ projectId, isEdit, changeIsEdit, isAddNewProject, setMess
     }
 
     const saveChanges = async () => {
-        if (projectName) {
-            const tasksArr = []
-            const tasksUrls = updatedTasksId.map(id => {    //Создаем обновленный массив задач проекта и ссылок на них
-                tasksArr.push(updatedTasks[id])
-                return `/tasks/${id}.json`
-            })
-            const updatedTasksPromises = tasksUrls.map((url, index) => axiosHandler.put(url, tasksArr[index]))
+        if (!projectName) return setMessage('Имя проекта не должно быть пустым!')
+        if (projectName.length > 25) return setMessage('Название проекта более 25 символов!')
+        if (description.length > 50) return setMessage('Описание проекта более 50 символов!')
+        const tasksArr = []
+        const tasksUrls = updatedTasksId.map(id => {    //Создаем обновленный массив задач проекта и ссылок на них
+            tasksArr.push(updatedTasks[id])
+            return `/tasks/${id}.json`
+        })
+        const updatedTasksPromises = tasksUrls.map((url, index) => axiosHandler.put(url, tasksArr[index]))
 
-            const newProject = {    //Создаем объект сохраняемого проекта
-                createdBy: userId,
-                createdTime: Date.now(),
-                description,
-                projectName,
-                tasksId: updatedTasksId
-            }
-
-            //Нужно обновить список задач у user с учетом изменений текущего проекта ...
-            let userTasksId = [...user.tasksId]    //Получили весь старый массив id задач для редактирования у user
-            const projectTasksId = [...projects[projectId].tasksId]    //Получили весь старый массив id задач для сверки у project
-            userTasksId = userTasksId.filter(id =>  !projectTasksId.includes(id))  //Вычли из масива user старые задачи, входящие в project
-            userTasksId = [...userTasksId, ...updatedTasksId]   //Положили в массив user новые id задач из project
-
-            //Из БД нужно удалить все удаленные из проекта задачи, т.к. пока что они лишь вычеркнуты из списка у user и project
-            const deletedId = projectTasksId.filter(id => !updatedTasksId.includes(id))   //Нашли все id удаленных задач
-            const deletedUrls = deletedId.map(id => `/tasks/${id}.json` )   //Сформировали по ним массив ссылок
-            const deletedPromises = deletedUrls.map(url => axiosHandler.delete(url))    //А далее массив промисов
-
-            try {
-                await Promise.all(updatedTasksPromises) //Добавили разом все задачи из обновленного массива задач
-                await Promise.all(deletedPromises)  //Удалили разом все задачи, что были удалены в проекте
-                await axiosHandler.put(`/projects/${projectId}.json`, newProject)  //Добавили в БД отредактированный проект
-                await axiosHandler.put(`/users/${userId}/tasksId.json`, userTasksId)    //Заменили список задач у user
-                await getUpdate()   //Обновили данные состояния приложения
-            } catch(e) {
-                console.log('saveChanges(put tasks or changed project)', e)
-            }
-            setIsAddTask(false)
-            setTaskName('')
-            changeIsEdit(false)
-        } else {
-            alert('Имя проекта не должно быть пустым!')
+        const newProject = {    //Создаем объект сохраняемого проекта
+            createdBy: userId,
+            createdTime: Date.now(),
+            description,
+            projectName,
+            tasksId: updatedTasksId
         }
+
+        //Нужно обновить список задач у user с учетом изменений текущего проекта ...
+        let userTasksId = [...user.tasksId]    //Получили весь старый массив id задач для редактирования у user
+        const projectTasksId = [...projects[projectId].tasksId]    //Получили весь старый массив id задач для сверки у project
+        userTasksId = userTasksId.filter(id =>  !projectTasksId.includes(id))  //Вычли из масива user старые задачи, входящие в project
+        userTasksId = [...userTasksId, ...updatedTasksId]   //Положили в массив user новые id задач из project
+
+        //Из БД нужно удалить все удаленные из проекта задачи, т.к. пока что они лишь вычеркнуты из списка у user и project
+        const deletedId = projectTasksId.filter(id => !updatedTasksId.includes(id))   //Нашли все id удаленных задач
+        const deletedUrls = deletedId.map(id => `/tasks/${id}.json` )   //Сформировали по ним массив ссылок
+        const deletedPromises = deletedUrls.map(url => axiosHandler.delete(url))    //А далее массив промисов
+
+        try {
+            await Promise.all(updatedTasksPromises) //Добавили разом все задачи из обновленного массива задач
+            await Promise.all(deletedPromises)  //Удалили разом все задачи, что были удалены в проекте
+            await axiosHandler.put(`/projects/${projectId}.json`, newProject)  //Добавили в БД отредактированный проект
+            await axiosHandler.put(`/users/${userId}/tasksId.json`, userTasksId)    //Заменили список задач у user
+            await getUpdate()   //Обновили данные состояния приложения
+        } catch(e) {
+            console.log('saveChanges(put tasks or changed project)', e)
+        }
+        setIsAddTask(false)
+        setTaskName('')
+        changeIsEdit(false)
     }
 
     const deleteProject = async () => {

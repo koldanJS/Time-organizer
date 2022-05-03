@@ -18,7 +18,7 @@ const TableTotal = () => {
             </div>
             <div className='submit-week' >
                 <Button >
-                    <TextItem text='Отправить недельный отчет' />
+                    <TextItem text='Архивировать недельный отчет' />
                 </Button>
             </div>
         </div>

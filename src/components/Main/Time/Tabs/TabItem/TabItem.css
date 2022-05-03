@@ -1,14 +1,18 @@
 .tab-item {
-    box-sizing: border-box;
-    padding: 0 15px;
-    padding-top: 15px;
-}
-.tab-item:hover {
-    border-bottom: 3px solid #CE6AFD;
-}
-.tab-item.active {
-    border-bottom: 3px solid #CE6AFD;
+    padding: 0;
 }
 .tab-item a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    height: 50px;
     text-decoration: none;
+    padding: 0 15px;
+}
+.tab-item a:hover {
+    border-bottom: 3px solid #CE6AFD;
+}
+.tab-item a.active {
+    border-bottom: 3px solid #CE6AFD;
 }

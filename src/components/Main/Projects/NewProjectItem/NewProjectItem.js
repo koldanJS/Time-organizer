@@ -5,7 +5,7 @@ import { useSimpledStore, useUpdate } from '../../../../functions/functions'
 import images from '../../../img/img'
 import './NewProjectItem.css'
 
-const NewProjectItem = ({ cancelProjectAddition, newProjectId }) => {
+const NewProjectItem = ({ cancelProjectAddition, newProjectId, setMessage }) => {
 
     const { getData } = useUpdate()
     const { userId, user, tasks } = useSimpledStore()
@@ -36,7 +36,8 @@ const NewProjectItem = ({ cancelProjectAddition, newProjectId }) => {
 
     const addTask = event => {
         if (event.code !== 'Enter') return //Срабатывает только на Enter
-        if (!taskName) alert('Имя задачи не должно быть пустым!')   //Если имя не введено и нажат Enter
+        if (!taskName) return setMessage('Имя задачи не должно быть пустым!')
+        if (taskName.length > 25) return setMessage('Имя задачи более 25 символов!')
         const newId = v4()  //Получаем шифрованный id
         setUpdatedTasksId([...updatedTasksId, newId])   //Добавляем в состояние
         const newTask = { [newId]: { createdBy: userId, projectId: newProjectId, taskName } }
@@ -78,42 +79,41 @@ const NewProjectItem = ({ cancelProjectAddition, newProjectId }) => {
     }
 
     const saveChanges = async () => {
-        if (projectName) {
-            const tasksArr = []
-            const tasksUrls = updatedTasksId.map(id => {    //Создаем обновленный массив задач проекта и ссылок на них
-                tasksArr.push(updatedTasks[id])
-                return `/tasks/${id}.json`
-            })
-            const updatedTasksPromises = tasksUrls.map((url, index) => axiosHandler.put(url, tasksArr[index]))
+        if (!projectName) return setMessage('Имя проекта не должно быть пустым!')
+        if (projectName.length > 25) return setMessage('Название проекта более 25 символов!')
+        if (description.length > 50) return setMessage('Описание проекта более 50 символов!')
+        const tasksArr = []
+        const tasksUrls = updatedTasksId.map(id => {    //Создаем обновленный массив задач проекта и ссылок на них
+            tasksArr.push(updatedTasks[id])
+            return `/tasks/${id}.json`
+        })
+        const updatedTasksPromises = tasksUrls.map((url, index) => axiosHandler.put(url, tasksArr[index]))
 
-            const newProject = {    //Создаем объект создаваемого проекта
-                createdBy: userId,
-                createdTime: Date.now(),
-                description,
-                projectName,
-                tasksId: updatedTasksId
-            }
-
-            //Нужно обновить список проектов у user, добавив новый проект ...
-            const userProjectsId = [...user.projectsId, newProjectId]   //Положили в массив user id нового проекта
-
-            //Нужно обновить список задач у user, добавив задачи из нового проекта ...
-            const userTasksId = [...user.tasksId, ...updatedTasksId]   //Положили в массив user новые id задач из project
-
-            try {
-                await Promise.all(updatedTasksPromises) //Добавили разом все задачи из обновленного массива задач
-                await axiosHandler.put(`/projects/${newProjectId}.json`, newProject)  //Добавили в БД новый проект
-                await axiosHandler.put(`/users/${userId}/projectsId.json`, userProjectsId)    //Заменили список проектов у user
-                await axiosHandler.put(`/users/${userId}/tasksId.json`, userTasksId)    //Заменили список задач у user
-                await getData(userId)   //Обновили данные состояния приложения
-            } catch(e) {
-                console.log('saveChanges(put tasks or new project)', e)
-            }
-
-            cancelProjectAddition() //Закрыли компонент, добавляющий проекты
-        } else {
-            alert('Имя проекта не должно быть пустым!')
+        const newProject = {    //Создаем объект создаваемого проекта
+            createdBy: userId,
+            createdTime: Date.now(),
+            description,
+            projectName,
+            tasksId: updatedTasksId
         }
+
+        //Нужно обновить список проектов у user, добавив новый проект ...
+        const userProjectsId = [...user.projectsId, newProjectId]   //Положили в массив user id нового проекта
+
+        //Нужно обновить список задач у user, добавив задачи из нового проекта ...
+        const userTasksId = [...user.tasksId, ...updatedTasksId]   //Положили в массив user новые id задач из project
+
+        try {
+            await Promise.all(updatedTasksPromises) //Добавили разом все задачи из обновленного массива задач
+            await axiosHandler.put(`/projects/${newProjectId}.json`, newProject)  //Добавили в БД новый проект
+            await axiosHandler.put(`/users/${userId}/projectsId.json`, userProjectsId)    //Заменили список проектов у user
+            await axiosHandler.put(`/users/${userId}/tasksId.json`, userTasksId)    //Заменили список задач у user
+            await getData(userId)   //Обновили данные состояния приложения
+        } catch(e) {
+            console.log('saveChanges(put tasks or new project)', e)
+        }
+
+        cancelProjectAddition() //Закрыли компонент, добавляющий проекты
     }
 
     return (

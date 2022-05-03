@@ -46,6 +46,7 @@ const Projects = () => {
                 <NewProjectItem
                     cancelProjectAddition={ () => setIsAddNewProject(false) }
                     newProjectId={ v4() }
+                    setMessage={ setMessage }
                 />
                 { getProjectItems() }
             </>

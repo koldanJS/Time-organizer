@@ -5,26 +5,19 @@ import './Tabs.css'
 const Tabs = () => {
 
     const tabs = [
-        {
-            title: 'Табель учета рабочего времени',
-            activeClass: 'active'
-        },
-        {
-            title: 'В ожидании утверждения',
-            activeClass: ''
-        },
-        {
-            title: 'Архив',
-            activeClass: ''
-        }
+        { title: 'Табель учета рабочего времени', to: '/time/timesheets' },
+        // { title: 'В ожидании утверждения', to: '/time/pending' },
+        { title: 'Архив', to: '/time/archive' }
     ]
 
     return (
-        <div className='tabs'>
-            {
-                tabs.map((tab, index) => <TabItem key={index} {...tab} />)
-            }
-        </div>
+        <nav className='tabs'>
+            <ul>
+                {
+                    tabs.map((tab, index) => <TabItem key={index} {...tab} />)
+                }
+            </ul>
+        </nav>
     )
 }
 

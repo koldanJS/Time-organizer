@@ -19,9 +19,9 @@ const Header = () => {
     }
 
     const headerItems = [
-        {to: '/', exact: 'true', label: '', classType: 'home', img: {src: images.homeLogo, alt: 'Home'}},
-        {to: '/time', exact: 'false', label: 'Время', classType: 'tab', img: ''},
-        {to: '/projects', exact: 'false', label: 'Проекты', classType: 'tab', img: ''}
+        {to: '/', label: '', classType: 'home', img: {src: images.homeLogo, alt: 'Home'}},
+        {to: '/time/timesheets', label: 'Время', classType: 'tab', img: ''},
+        {to: '/projects', label: 'Проекты', classType: 'tab', img: ''}
     ]
 
     const closeDropDown = () => { sewIsDropDown(false) }

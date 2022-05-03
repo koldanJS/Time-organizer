@@ -18,9 +18,14 @@ function App() {
           <Home />
         </Layout>
       } />
-      <Route path='/time' element={
+      <Route path='/time/timesheets' element={
         <Layout>
-          <Time />
+          <Time activeTab='timesheets' />
+        </Layout>
+      } />
+      <Route path='/time/archive' element={
+        <Layout>
+          <Time activeTab='archive' />
         </Layout>
       } />
       <Route path='/projects' element={

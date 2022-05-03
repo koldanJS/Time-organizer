@@ -1,17 +1,20 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import './TabItem.css'
 
-const TabItem = ({title, activeClass}) => {
+const TabItem = ({title, to}) => {
 
-    const classes = ['tab-item']
-    classes.push(activeClass)
+
 
     return (
-        <nav className={classes.join(' ')} >
-            <a href='#' className='text'>
-                {title}
-            </a>
-        </nav>
+        <li className='tab-item' >
+            <NavLink
+                to={to}
+                className={({ isActive }) => isActive ? 'text active' : 'text'}
+            >
+                { title }
+            </NavLink>
+        </li>
     )
 }
 

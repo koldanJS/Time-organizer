@@ -3,9 +3,24 @@ import Tabs from './Tabs/Tabs'
 import NewEntry from './NewEntry/NewEntry'
 import MainTable from './MainTable/MainTable'
 
-const Time = () => {
+const Time = ({activeTab}) => {
 
+    const getContent = () => {
+        switch (activeTab) {
+            case 'timesheets': return (
+                <>
+                    <NewEntry />
+                    <MainTable />
+                </>
+            )
+            case 'archive': return (
+                <>
 
+                </>
+            )
+            default: return null
+        }
+    }
 
     return (
         <>
@@ -14,8 +29,7 @@ const Time = () => {
             </div>
             <hr className='demiliter'/>
             <div className='container'>
-                <NewEntry />
-                <MainTable />
+                { getContent() }
             </div>
         </>
     )

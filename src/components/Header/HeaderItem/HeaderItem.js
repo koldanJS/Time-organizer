@@ -1,8 +1,8 @@
 import React from 'react'
-import {NavLink} from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import './HeaderItem.css'
 
-const HeaderItem = ({ to, exact, label, classType, img }) => {
+const HeaderItem = ({ to, label, classType, img }) => {
 
     const classList = ['header-item']
     if (classType) classList.push(classType)
@@ -16,7 +16,6 @@ const HeaderItem = ({ to, exact, label, classType, img }) => {
         <li className={classList.join(' ')} >
             <NavLink
                 to={to}
-                exact={exact}
                 className={({ isActive }) => isActive ? 'text active' : 'text'}
             >
                 { getContent() }
