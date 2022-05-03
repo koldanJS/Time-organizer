@@ -26,7 +26,7 @@
     border: none;
     height: 15px;
     width: 15px;
-    background-color: white;
+    background-color: transparent;
     padding: 0;
     cursor: pointer;
     transition: all .2s;
@@ -48,7 +48,7 @@ li.tasks img {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: transparent;
     border: 1px solid #BEBEBE;
     border-radius: 5px;
     width: 30px;

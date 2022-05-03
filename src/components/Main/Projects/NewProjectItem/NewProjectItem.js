@@ -117,7 +117,7 @@ const NewProjectItem = ({ cancelProjectAddition, newProjectId }) => {
     }
 
     return (
-        <li className='project-item' >
+        <li className='project-item new-project' >
             <ul>
                 <li className='text editor' >
                     <button

@@ -1,0 +1,13 @@
+.projects-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: 600px;
+}
+.projects-message p {
+    padding: 5px 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    background-color: rgb(255, 202, 202);
+}

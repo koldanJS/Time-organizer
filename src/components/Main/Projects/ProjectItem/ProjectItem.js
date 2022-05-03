@@ -5,7 +5,7 @@ import { useSimpledStore, useUpdate } from '../../../../functions/functions'
 import images from '../../../img/img'
 import './ProjectItem.css'
 
-const ProjectItem = ({ projectId, isEdit, changeIsEdit }) => {
+const ProjectItem = ({ projectId, isEdit, changeIsEdit, isAddNewProject, setMessage }) => {
 
     const { getUpdate } = useUpdate()
     const { userId, user, projects, tasks } = useSimpledStore()
@@ -165,6 +165,11 @@ const ProjectItem = ({ projectId, isEdit, changeIsEdit }) => {
         changeIsEdit(false)
     }
 
+    const editStart = () => {
+        if (isAddNewProject) return setMessage('Сначала завершите создание нового проекта')
+        changeIsEdit(projectId)
+    }
+
     return (
         <li className='project-item' >
             <ul>
@@ -201,7 +206,7 @@ const ProjectItem = ({ projectId, isEdit, changeIsEdit }) => {
                                     />
                                 </button>
                             </>
-                            : <button onClick={ () => changeIsEdit(projectId) } >
+                            : <button onClick={ editStart } >
                                 <img
                                     src={images.editLogo}
                                     alt='Edit'

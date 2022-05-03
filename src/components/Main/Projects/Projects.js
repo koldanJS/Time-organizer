@@ -6,6 +6,7 @@ import Loader from '../../Loader/Loader'
 import images from '../../img/img'
 import './Projects.css'
 import { v4 } from 'uuid'
+import Message from './Message/Message'
 
 const Projects = () => {
 
@@ -13,10 +14,28 @@ const Projects = () => {
 
     const [isAddNewProject, setIsAddNewProject] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
+    const [message, setMessage] = useState(false)
     
     const projectsId = user.projectsId
 
+    const showMessage = () => {
+        setTimeout(() => {
+            setMessage(false)
+        }, 3000);
+        return <Message message={message} />
+    }
+
     const getItems = () => {
+
+        const getProjectItems = () => projectsId.map( id => <ProjectItem
+            key={ id }
+            projectId={ id }
+            isEdit={ isEdit }
+            changeIsEdit={ setIsEdit }
+            isAddNewProject={ isAddNewProject }
+            setMessage={ setMessage }
+        /> )
+
         if (isLoading) return (
             <div className='projects-loader' >
                 <Loader />
@@ -28,34 +47,36 @@ const Projects = () => {
                     cancelProjectAddition={ () => setIsAddNewProject(false) }
                     newProjectId={ v4() }
                 />
-                { projectsId.map( id => <ProjectItem
-                    key={ id }
-                    projectId={ id }
-                    isEdit={ isEdit }
-                    changeIsEdit={ setIsEdit }
-                /> ) }
+                { getProjectItems() }
             </>
         )
-        return projectsId.map( id => <ProjectItem
-            key={ id }
-            projectId={ id }
-            isEdit={ isEdit }
-            changeIsEdit={ setIsEdit }
-        /> )
+        return getProjectItems()
+    }
+
+    const addNewProjectStart = () => {
+        if (isEdit) return setMessage('Сначала завершите редактирование проекта')
+        setIsAddNewProject(true)
     }
 
     return (
         <div className='projects' >
-            <button
-                className='new'
-                onClick={ () => setIsAddNewProject(true) }
-            >
-                    <img
-                        src={images.whitePlusLogo}
-                        alt='Plus'
-                    />
-                <p className='text size-20 color-white' >Новый проект</p>
-            </button>
+            <div className='projects-top' >
+                <button
+                    className='new'
+                    onClick={ addNewProjectStart }
+                >
+                        <img
+                            src={images.whitePlusLogo}
+                            alt='Plus'
+                        />
+                    <p className='text size-20 color-white' >Новый проект</p>
+                </button>
+                {
+                    message
+                        ? showMessage()
+                        : null
+                }
+            </div>
             <hr className='demiliter' />
             <ul className='projects-header' >
                 <li className='text editor' >
