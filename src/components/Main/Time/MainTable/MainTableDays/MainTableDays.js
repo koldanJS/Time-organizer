@@ -1,5 +1,4 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { changeData } from '../../../../../redux/actions/appStateActions/timeStateActions'
 import { getAddition, getDateString, getFormatTime, getRange, getTotalTime, useSimpledStore } from '../../../../../functions/functions'
 import DayItem from './DayItem/DayItem'

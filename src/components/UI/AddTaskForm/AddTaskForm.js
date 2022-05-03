@@ -77,7 +77,7 @@ const AddTaskForm = ({ closeFormHandler }) => {
         const timesSheets = user?.timesSheets || {}
         let timesSheet = timesSheets[currentDateString] || []    //Начальное значение массива, при любом смещении
         if ( !offset && user.activeEntry) {   //Если запись добавляют сегодня и если уже была активная,
-            timesSheet = await stopTracking( user, userId, getDateString, axiosHandler, getUpdate ) //то нужно ее разактивировать и переписать ее время, вернув новый массив
+            timesSheet = await stopTracking( user, userId, axiosHandler, getUpdate ) //то нужно ее разактивировать и переписать ее время, вернув новый массив
         }
         const newTimesSheet = [...timesSheet, newEntry]
         await createEntry(newTimesSheet, currentDateString)

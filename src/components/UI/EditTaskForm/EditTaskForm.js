@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { getFormatTime, getTimeNumber, controlTime, useSimpledStore, getDateString, useUpdate, changeActiveEntry, stopTracking } from '../../../functions/functions'
-import { offAddForm, offEditForm } from '../../../redux/actions/appStateActions/appStateActions'
+import { getFormatTime, getTimeNumber, controlTime, useSimpledStore, getDateString, useUpdate } from '../../../functions/functions'
+import { offEditForm } from '../../../redux/actions/appStateActions/appStateActions'
 import axiosHandler from '../../../axios/axiosHandler'
 import TextItem from '../../TextItem/TexItem'
 import ButtonForm from '../ButtonForm/ButtonForm'
@@ -11,7 +11,7 @@ import { asyncGetUser } from '../../../redux/actions/userActions'
 const EditTaskForm = ({ closeFormHandler, index }) => {
 
     const { userId, user, projects, tasks, offset, selectedDate, dispatch } = useSimpledStore()
-    const { getUpdate, getUpdateCurrent } = useUpdate()
+    const { getUpdateCurrent } = useUpdate()
 
     const currentEntry = user.timesSheets[getDateString(offset)][index]
 

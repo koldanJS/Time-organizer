@@ -2,7 +2,6 @@ import React from 'react'
 import TextItem from '../../TextItem/TexItem'
 import images from '../../img/img'
 import './NewEntryBtn.css'
-import AddTaskForm from '../AddTaskForm/AddTaskForm'
 
 const NewEntryBtn = ({clickHandler}) => {
 

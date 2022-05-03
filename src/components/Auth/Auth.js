@@ -31,6 +31,8 @@ const Auth = () => {
         const auth = getAuth()
         try {
             const data = await createUserWithEmailAndPassword(auth, email, password)
+            console.log('auth', auth)
+            console.log('data', data)   //Сделать валидацию по responce не получится
             const user = data.user
             dispatch(setUser({
                 email: user.email,

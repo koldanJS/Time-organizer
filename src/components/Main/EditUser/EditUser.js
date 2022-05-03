@@ -1,28 +1,89 @@
-import React from 'react'
-import { useSimpledStore } from '../../../functions/functions'
+import React, { useState } from 'react'
+import axiosHandler from '../../../axios/axiosHandler'
+import { useSimpledStore, useUpdate } from '../../../functions/functions'
 import Loader from '../../Loader/Loader'
+import ButtonForm from '../../UI/ButtonForm/ButtonForm'
 import './EditUser.css'
+import EditUserItem from './EditUserItem/EditUserItem'
 
 const EditUser = () => {
 
-    const { user, isLoading } = useSimpledStore()
+    const { userId, user, isLoading } = useSimpledStore()
+    const { getData } = useUpdate()
+    const [firstName, setFirstName] = useState(user?.info?.firstName || '')
+    const [lastName, setLastName] = useState(user?.info?.lastName || '')
+    const [email, setEmail] = useState(user?.info?.email || '')
+    const [company, setCompany] = useState(user?.info?.company || '')
+    const [dateOfBirth, setDateOfBirth] = useState(user?.info?.dateOfBirth || '')
+    const [phoneNumber, setPhoneNumber] = useState(user?.info?.phoneNumber || '')
+    const [isChange, setIsChange] = useState(false)
 
-    const getUserData = () => {
-        return {
-            firstName: user.info.firstName,
-            lastName: user.info.firstName,
-            company: user.info.company,
-            dateOfBirth: user.info.dateOfBirth,
-            email: user.info.email,
-            phoneNumber: user.info.phoneNumber,
-            projectsNumber: user.projectsId.length,
-            tasksNumber: user.tasksId.length,
+    const mainItems = [
+        {
+            name: 'Имя',
+            value: firstName,
+            placeholder: 'Ваше имя...',
+            setValue: setFirstName
+        },
+        {
+            name: 'Фамилия',
+            value: lastName,
+            placeholder: 'Ваша фамилия...',
+            setValue: setLastName
+        },
+        {
+            name: 'Рабочая почта',
+            value: email,
+            placeholder: 'Ваш email...',
+            setValue: setEmail,
+            type: 'email'
+        },
+        {
+            name: 'Компания',
+            value: company,
+            placeholder: 'Ваше место работы...',
+            setValue: setCompany
+        }
+    ]
+    const additionalItems = [
+        {
+            name: 'День рождения',
+            value: dateOfBirth,
+            placeholder: 'Ваш день рождения...',
+            setValue: setDateOfBirth,
+            type: 'date'
+        },
+        {
+            name: 'Номер телефона',
+            value: phoneNumber,
+            placeholder: 'Ваш номер...',
+            setValue: setPhoneNumber,
+            type: 'tel'
+        }
+    ]
+
+    const saveChanges = async () => {
+        console.log('save')
+        const newUserInfo = {
+            firstName,
+            lastName,
+            email,
+            company,
+            dateOfBirth,
+            phoneNumber,
+        }
+        const newUser = {
+            ...user,
+            info: newUserInfo
+        }
+        try {
+            await axiosHandler.put(`/users/${userId}.json`, newUser)    //Заменили user
+            await getData(userId)   //Обновили данные состояния приложения
+            setIsChange(false)
+        } catch(e) {
+            console.log('saveChanges(put new user)', e)
         }
     }
-
-    const userData = isLoading ? {} : getUserData()
-    // const name = (user.info.firstName || 'FirstName') + (user.info.lastName || '')
-    // const company = user.info.company || 'Your Company?'
 
     return (
         isLoading
@@ -30,58 +91,38 @@ const EditUser = () => {
                 <Loader />
             </div>
             : <div className='edit-user' >
-                <h1 className='text size-30 width-700'>{`Ваша базовая информация, ${userData.firstName}`}</h1>
-                <hr className='demiliter' />
-                <div>
-                    <h3>Основная информация</h3>
-                    <p>Имя</p>
-                    <input
-                        value={ userData.firstName }
-                        placeholder='Ваше имя...'
-                        onChange={ () => {} }
-                    />
-                    <p>Фамилия</p>
-                    <input
-                        value={ userData.lastName }
-                        placeholder='Ваша фамилия...'
-                        onChange={ () => {} }
-                    />
-                    <p>Рабочая почта</p>
-                    <input
-                        value={ userData.email }
-                        placeholder='Ваш email...'
-                        onChange={ () => {} }
-                    />
-                    <p>Компания</p>
-                    <input
-                        value={ userData.company }
-                        placeholder='Ваше место работы...'
-                        onChange={ () => {} }
-                    />
+                <h1 className='text size-30 width-700' >{`Ваша базовая информация, ${user?.info?.firstName}`}</h1>
+                <EditUserItem
+                    label='Основная информация'
+                    items={ mainItems }
+                    setIsChange={ setIsChange }
+                />
+                <EditUserItem
+                    label='Дополнительная информация'
+                    items={ additionalItems }
+                    setIsChange={ setIsChange }
+                />
+                <div className='edit-user-item'>
+                    <hr className='demiliter' />
+                    <h3 className='text size-22 width-700' >Статистика</h3>
+                    <ul>
+                        <li>
+                            <p className='text' >{ `Количество проектов, над которыми вы сейчас работаете:` }</p>
+                            <p className='text' >{ user?.projectsId?.length }</p>
+                        </li>
+                        <li>
+                            <p className='text' >{ `Количество задач, над которыми вы сейчас работаете:` }</p>
+                            <p className='text' >{ user?.tasksId?.length }</p>
+                        </li>
+                    </ul>
                 </div>
-                <hr className='demiliter' />
-                <div>
-                    <h3>Дополнительная информация</h3>
-                    <p>День рождения</p>
-                    <input
-                        value={ userData.firstName }
-                        placeholder='Ваше имя...'
-                        onChange={ () => {} }
-                    />
-                    <p>Номер телефона</p>
-                    <input
-                        value={ userData.lastName }
-                        placeholder='Ваша фамилия...'
-                        onChange={ () => {} }
-                    />
-                </div>
-                <div>
-                    <h3>Статистика</h3>
-                    <p>{ `Количество проектов, над которыми вы сейчас работаете:` }</p>
-                    <p>{ userData.projectsNumber }</p>
-                    <p>{ `Количество задач, над которыми вы сейчас работаете:` }</p>
-                    <p>{ userData.tasksNumber }</p>
-                </div>
+                <ButtonForm
+                    classType='success'
+                    clickHandler={ saveChanges }
+                    disabled={ isChange ? false : true }
+                >
+                    Сохранить изменения
+                </ButtonForm>
             </div>
     )
 }

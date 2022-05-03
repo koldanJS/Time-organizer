@@ -14,20 +14,20 @@ const TableItemRight = ({totalTime, isActive, index}) => {
     const { getUpdate } = useUpdate()
 
     const stop = () => {
-        stopTracking( user, userId, getDateString, axiosHandler, getUpdate )
+        stopTracking( user, userId, axiosHandler, getUpdate )
         console.log('STOP')
     }
 
     const start = async () => {
         if (offset) return
-        if (user.activeEntry) await stopTracking( user, userId, getDateString, axiosHandler, getUpdate )    //Записывает в totalTime окончательное время
+        if (user.activeEntry) await stopTracking( user, userId, axiosHandler, getUpdate )    //Записывает в totalTime окончательное время
         await changeActiveEntry( offset, user, userId, getDateString, axiosHandler, getUpdate, index )  //Устанавливает данную запись активной, если offset === 0
         console.log('START')
     }
 
     const edit = async (index) => {
         if (!offset && user.activeEntry && index === user.activeEntry.entryNumber) {    //Проверка, что редактируем активную запись
-            await stopTracking( user, userId, getDateString, axiosHandler, getUpdate )  //Тогда остановить ее и обновить в ней данные
+            await stopTracking( user, userId, axiosHandler, getUpdate )  //Тогда остановить ее и обновить в ней данные
         }
         dispatch(onEditForm(index))
         console.log('EDIT ', index)

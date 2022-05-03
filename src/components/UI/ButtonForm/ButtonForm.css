@@ -46,9 +46,21 @@
     width: 450px;
     margin: 0;
 }
-
-/* .Button:disabled {
+.Button:disabled {
     background-color: #ccc;
+    border: none;
     color: #000;
     cursor: not-allowed;
-} */
+}
+.Button:disabled:hover {
+    background-color: #ccc;
+    border: none;
+    color: #000;
+    cursor: not-allowed;
+}
+.Button:disabled:active {
+    background-color: #ccc;
+    border: none;
+    color: #000;
+    cursor: not-allowed;
+}

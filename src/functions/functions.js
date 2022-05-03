@@ -5,11 +5,6 @@ import { asyncGetProjects } from '../redux/actions/projectActions'
 import { asyncGetTasks } from '../redux/actions/taskActions'
 import { asyncGetUser } from '../redux/actions/userActions'
 
-// Quiz.js  //Использовать, чтоб подсвечивать вкладки, соответствующие пути
-// import {useLocation} from 'react-router-dom'
-// const location = useLocation()
-// const path = location.pathname.replace('/quiz', '')
-
 export const useSimpledStore = () => {
     const { appState, user, projects, tasks, timeState } = useSelector(store => store)
     const { isAuth ,email, token, userId, isLoading, isAddFormOn, isEditFormOn, isReload } = appState
@@ -133,10 +128,6 @@ export const getNewUserData = (userId) => {
 
 export const changeActiveEntry = async ( offset, user, userId, getDateString, axiosHandler, getUpdate, index = -1 ) => {
     try {
-        //Для активной записи можно при рендеринге всегда писать время total + Date.now() - startTime
-        //lastActiveEntry
-        //Общее событие stopTracking - срабатывает при нажатии СТОП и при том, если во время рендеринга окажется, что dateString не за сегодня
-        //Каждую минуту будет происходить ререндеринг(если есть активная запись), при этом и все условия будут перепроверяться и время в активной записи обновляться
         if (!offset) {
             const timesSheets = user?.timesSheets || {}
             const newEntryNumber = (index < 0) ? (timesSheets[getDateString()]?.length || 0) : index
@@ -150,20 +141,17 @@ export const changeActiveEntry = async ( offset, user, userId, getDateString, ax
     }
 }
 
-export const stopTracking = async ( user, userId, getDateString, axiosHandler, getUpdate, isTomorrow ) => {
+export const stopTracking = async ( user, userId, axiosHandler, getUpdate ) => {
     try {
-        const { startTime, entryNumber } = user.activeEntry
+        const { startTime, entryNumber, timesSheetId } = user.activeEntry
         const addition = Math.round( (Date.now() - startTime) / msPerMin )
-        const currentDateString = getDateString(isTomorrow ? -1 : 0)
-        const timesSheet = user.timesSheets[currentDateString]
+        const timesSheet = user.timesSheets[timesSheetId]
         const newTimesSheet = timesSheet.map((item, index) => {
             if (entryNumber === index) return {...item, totalTime: item.totalTime + addition}
             return item
         })
-        let urlEnd = `/users/${userId}/timesSheets/${currentDateString}.json`
-        await axiosHandler.put(urlEnd, newTimesSheet)
-        urlEnd = `/users/${userId}/activeEntry.json`
-        await axiosHandler.delete(urlEnd)
+        await axiosHandler.put(`/users/${userId}/timesSheets/${timesSheetId}.json`, newTimesSheet)
+        await axiosHandler.delete(`/users/${userId}/activeEntry.json`)
         await getUpdate()
         return newTimesSheet
     } catch(e) {

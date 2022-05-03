@@ -19,7 +19,7 @@ const MainTable = () => {
     setInterval(() => { //Каждые 10 сек обновлять таблицу времени новыми данными (без асинхронных запросов)
         if (user.activeEntry) { //Если есть активная запись
             if (user?.activeEntry?.timesSheetId !== getDateString()) {  //Если начался новый день
-                stopTracking( user, userId, getDateString, axiosHandler, getUpdate, 'tomorrow' )    //Выключить активную запись
+                stopTracking( user, userId, axiosHandler, getUpdate )    //Выключить активную запись
             }
             setTimeUpdate(Math.round(new Date().getSeconds()/30))   //Если есть активная запись, обновить таблицу каждые 30 сек
         }
