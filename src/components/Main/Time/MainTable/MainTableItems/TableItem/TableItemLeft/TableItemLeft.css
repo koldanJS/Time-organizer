@@ -1,14 +1,15 @@
 .table-item-left {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 16px;
+    padding: 0 16px;
+    width: 100%;
     height: 70px;
 }
-.table-item-left .head {
+.table-item-left .basic {
     display: flex;
-    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 40%;
 }
-.table-item-left .head p {
-    margin-right: 8px;
+.table-item-left p {
+    margin-top: 10px;
 }

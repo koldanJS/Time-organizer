@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ButtonForm from '../../UI/ButtonForm/ButtonForm'
 import './AuthForm.css'
 
-const AuthForm = ({ label, buttonText, placeholders, submitHandler }) => {
+const AuthForm = ({ label, buttonText, placeholders, submitHandler, linkText, changeForm, forgotPasswordText, forgotPassword }) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -27,6 +27,14 @@ const AuthForm = ({ label, buttonText, placeholders, submitHandler }) => {
             <ButtonForm type='submit' classType='success sign' >
                 <p className='text color-white' > { buttonText } </p>
             </ButtonForm>
+            <div className='links' >
+                <a className='text size-16' onClick={ changeForm } >{linkText}</a>
+                {
+                    forgotPasswordText
+                        ? <a className='text size-16' onClick={ forgotPassword } >{forgotPasswordText}</a>
+                        : null
+                }
+            </div>
         </form>
     )
 }

@@ -6,7 +6,7 @@ import Loader from '../../Loader/Loader'
 import images from '../../img/img'
 import './Projects.css'
 import { v4 } from 'uuid'
-import Message from './Message/Message'
+import Message from '../../UI/Message/Message'
 
 const Projects = () => {
 
@@ -22,7 +22,7 @@ const Projects = () => {
         setTimeout(() => {
             setMessage(false)
         }, 3000);
-        return <Message message={message} />
+        return <Message message={message} type='error' />
     }
 
     const getItems = () => {

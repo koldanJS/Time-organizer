@@ -11,7 +11,8 @@ const TableItem = ({projectName, taskName, description, totalTime, isActive, ind
 
     const left = {
         projectName,
-        taskName
+        taskName,
+        description
     }
     const right = {
         totalTime,

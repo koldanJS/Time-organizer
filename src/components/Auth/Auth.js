@@ -10,6 +10,7 @@ import { useSimpledStore, useUpdate, getNewUserData } from '../../functions/func
 import images from '../img/img'
 import './Auth.css'
 import AuthForm from '../UI/AuthForm/AuthForm'
+import Message from '../UI/Message/Message'
 import axiosHandler from '../../axios/axiosHandler'
 import Loader from '../Loader/Loader'
 
@@ -18,16 +19,33 @@ const Auth = () => {
     const { isAuth, isReload, userId, isLoading, dispatch } = useSimpledStore()
     const navigate = useNavigate()
     const [isRegistered, setIsRegistered] = useState(true)
+    const [message, setMessage] = useState(false)
     const { getData } = useUpdate()
-
-    const clickToRegister = async () => {
-        setIsRegistered(false)
-    }
 
     console.log('render auth')
 
+    const validateEmail = (email) => {
+        const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return reg.test(String(email).toLowerCase())
+    }
+    const validatePassword = (password) => {
+        return String(password).length > 5
+    }
+
+    const showMessage = () => {
+        setTimeout(() => {
+            setMessage(false)
+        }, 3000);
+        return <Message message={message} type='error' />
+    }
+
+    const forgotHandler = async () => {
+    }
+
     const register = async (event, email, password) => {
         event.preventDefault()
+        if (!validateEmail(email)) return setMessage('Введите корректный email')
+        if (!validatePassword(password)) return setMessage('Длина пароля д.б. не менее 6 знаков')
         const auth = getAuth()
         try {
             const data = await createUserWithEmailAndPassword(auth, email, password)
@@ -52,12 +70,15 @@ const Auth = () => {
             await getData(user.uid)
             navigate('/')
         } catch(e) {
+            if (String(e.message).includes('email-already-in-use')) setMessage('Такой пользователь уже существует')
             console.log('register error ', e)
         }
     }
 
     const login = async (event, email, password) => {
         event.preventDefault()
+        if (!validateEmail(email)) return setMessage('Введите корректный email')
+        if (!validatePassword(password)) return setMessage('Длина пароля д.б. не менее 6 знаков')
         const auth = getAuth()
         try {
             const data = await signInWithEmailAndPassword(auth, email, password)
@@ -70,6 +91,8 @@ const Auth = () => {
             await getData(user.uid)
             navigate('/')
         } catch(e) {
+            if (String(e.message).includes('user-not-found')) setMessage('Такой пользователь не существует, зарегистрируйтесь')
+            if (String(e.message).includes('wrong-password')) setMessage('Вы ввели неверный пароль')
             console.log('login error ', e)
         }
     }
@@ -97,20 +120,21 @@ const Auth = () => {
                 <img src={ images.appLogo } alt='Auth-logo' className='auth-logo' />
                 <div className='auth-items' >
                     <h1 className='auth-text text size-30 width-700' >{ isRegistered ? 'Войдите в Time Organizer' : 'Зарегистрируйтесь в Time Organizer' }</h1>
-                    {
-                        isRegistered
-                            ? <div className='register' >
-                                <p className='text' >Впервые здесь?</p>
-                                <a className='text' onClick={ clickToRegister } >зарегистрируйтесь</a>
-                            </div>
-                            : null
-                    }
                     <AuthForm
                         label={ isRegistered ? 'Войдите с логином и паролем' : 'Зарегистрируйтесь с логином и паролем' }
                         buttonText={ isRegistered ? 'Войти' : 'Зарегистрироваться' }
                         placeholders={{ email: 'Email...', password: 'Пароль...' }}
                         submitHandler={ isRegistered ? login : register }
+                        linkText={ isRegistered ? 'Зарегистрироваться' : 'Авторизоваться' }
+                        changeForm={ () => setIsRegistered(!isRegistered) }
+                        forgotPasswordText={ isRegistered ? 'Восстановить пароль' : null }
+                        forgotPassword={ forgotHandler }
                     />
+                    {
+                        message
+                            ? showMessage()
+                            : null
+                    }
                 </div>
             </div>
     )

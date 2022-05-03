@@ -1,23 +1,17 @@
 import React from 'react'
-import TextItem from '../../../../../../TextItem/TexItem'
 import './TableItemLeft.css'
 
-const TableItemLeft = ({projectName, taskName}) => {
+const TableItemLeft = ({projectName, taskName, description}) => {
     
-    const keyName = 'key'; const executor = 'исполнитель'
-    const getKey = () => {
-        if (keyName) return <TextItem classes={['width-700']} text={`[${keyName}]`} />
-        return null
-    }
+    
 
     return (
         <div className='table-item-left'>
-            <div className='head' >
-                { getKey() }
-                <TextItem classes={['width-700']} text={projectName} />
-                <TextItem text={`(${executor})`} />
+            <div className='basic' >
+                <p className='text width-700' >{projectName}</p>
+                <p className='text' >{taskName}</p>
             </div>
-            <TextItem text={taskName} />
+            <p className='text' >{description}</p>
         </div>
     )
 }
