@@ -18,15 +18,6 @@ const MainTableDays = () => {
                 totalTime: getTotalTime(index + 1, user, selectedWeek) + getAddition( user, selectedWeek, getDateString(offset + offsetMin + index) )
             }
         })
-        // return [
-        //     {isActive: selectedDate.dayNumber === 1, isTimeOn: true, day: 'Пн', totalTime: getTotalTime(1, user, selectedWeek)},
-        //     {isActive: selectedDate.dayNumber === 2, isTimeOn: false, day: 'Вт', totalTime: getTotalTime(2, user, selectedWeek)},
-        //     {isActive: selectedDate.dayNumber === 3, isTimeOn: false, day: 'Ср', totalTime: getTotalTime(3, user, selectedWeek)},
-        //     {isActive: selectedDate.dayNumber === 4, isTimeOn: false, day: 'Чт', totalTime: getTotalTime(4, user, selectedWeek)},
-        //     {isActive: selectedDate.dayNumber === 5, isTimeOn: false, day: 'Пт', totalTime: getTotalTime(5, user, selectedWeek)},
-        //     {isActive: selectedDate.dayNumber === 6, isTimeOn: false, day: 'Сб', totalTime: getTotalTime(6, user, selectedWeek)},
-        //     {isActive: selectedDate.dayNumber === 7, isTimeOn: false, day: 'Вс', totalTime: getTotalTime(7, user, selectedWeek)},
-        // ]
     }
     const dayItems = getDayItems()
 
