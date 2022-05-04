@@ -1,9 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Archive.css'
 
 const Archive = () => {
 
-
+    const navigate = useNavigate()
 
     return (
         <div className='archive'>
@@ -11,7 +12,9 @@ const Archive = () => {
             <h2 className='text head-item' >Временной промежуток</h2>
             <ul>
                 <li className='archive-item' >
-                    <a className='text' >11 Apr 2022 - 17 Apr 2022</a>
+                    <button className='text' onClick={ () => navigate('/time/week/2022-5-2-2022-5-8') } >
+                        2 Май 2022 - 8 Май 2022
+                    </button>
                     <hr className='demiliter' />
                 </li>
             </ul>

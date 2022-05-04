@@ -24,11 +24,19 @@
     padding: 10px 0;
     margin: 10px 0;
 }
-.archive .archive-item a {
+.archive .archive-item button {
     color: blue;
     text-decoration: underline;
+    background-color: transparent;
+    border: none;
     margin-left: 10px;
     cursor: pointer;
+}
+.archive .archive-item button:hover {
+    color: rgb(140, 0, 255);
+}
+.archive .archive-item button:active {
+    color: rgb(212, 0, 255);
 }
 .archive .archive-item .demiliter {
     margin: 15px 0;

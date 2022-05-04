@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { getDateString, msPerDay, useSimpledStore } from '../../../../../../functions/functions'
 import { setOffset } from '../../../../../../redux/actions/appStateActions/timeStateActions'
 import LeftRightBtn from '../../../../../UI/LeftRightBtn/LeftRightBtn'
@@ -8,6 +9,7 @@ const TableHeaderRight = () => {
 
     const { dispatch } = useSimpledStore()
     const [activeBtn, setActiveBtn] = useState('day')
+    const navigate = useNavigate()
 
     const changeHandler = (event) => {
         const now = new Date(getDateString()) //милисекунды на сегодня в 00:00
@@ -19,9 +21,11 @@ const TableHeaderRight = () => {
     const clickHandler = (direction) => {
         if (direction > 0) {
             setActiveBtn('week')
+            navigate('/time/week')
             console.log('week')
         } else {
             setActiveBtn('day')
+            navigate('/time/day')
             console.log('day')
         }
     }

@@ -18,12 +18,27 @@ function App() {
           <Home />
         </Layout>
       } />
+      <Route path='/time' element={
+        <Layout>
+          <Time activeTab='day' />
+        </Layout>
+      } />
       <Route path='/time/day' element={
         <Layout>
           <Time activeTab='day' />
         </Layout>
       } />
-      <Route path='/time/archive' element={
+      <Route path='/time/week' element={
+        <Layout>
+          <Time activeTab='week' />
+        </Layout>
+      } />
+      <Route path='/time/week/:id' element={
+        <Layout>
+          <Time activeTab='week' />
+        </Layout>
+      } />
+      <Route path='/archive' element={
         <Layout>
           <Time activeTab='archive' />
         </Layout>

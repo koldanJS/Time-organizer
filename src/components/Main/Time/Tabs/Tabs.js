@@ -5,9 +5,9 @@ import './Tabs.css'
 const Tabs = () => {
 
     const tabs = [
-        { title: 'Табель учета рабочего времени', to: '/time/day' },
+        { title: 'Табель учета рабочего времени', to: '/time' },
         // { title: 'В ожидании утверждения', to: '/time/pending' },
-        { title: 'Архив', to: '/time/archive' }
+        { title: 'Архив', to: '/archive' }
     ]
 
     return (
