@@ -20,7 +20,7 @@ const Header = () => {
 
     const headerItems = [
         {to: '/', label: '', classType: 'home', img: {src: images.homeLogo, alt: 'Home'}},
-        {to: '/time/timesheets', label: 'Время', classType: 'tab', img: ''},
+        {to: '/time/day', label: 'Время', classType: 'tab', img: ''},
         {to: '/projects', label: 'Проекты', classType: 'tab', img: ''}
     ]
 

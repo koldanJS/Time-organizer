@@ -1,9 +1,14 @@
-import { CHANGE_DATA, SET_ACTIVE } from "../../types/appStateTypes/timeStateTypes";
+import { CHANGE_DATA, SET_ACTIVE, SET_OFFSET } from "../../types/appStateTypes/timeStateTypes";
 
 
-export const changeData = (direction) => ({
+export const changeData = (offset) => ({
     type: CHANGE_DATA,
-    payload: direction
+    payload: offset
+})
+
+export const setOffset = (offset) => ({
+    type: SET_OFFSET,
+    payload: offset
 })
 
 export const setActive = (taskId) => ({

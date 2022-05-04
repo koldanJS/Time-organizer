@@ -2,23 +2,27 @@ import React from 'react'
 import Tabs from './Tabs/Tabs'
 import NewEntry from './NewEntry/NewEntry'
 import MainTable from './MainTable/MainTable'
+import Archive from './Archive/Archive'
 
 const Time = ({activeTab}) => {
 
     const getContent = () => {
         switch (activeTab) {
-            case 'timesheets': return (
+            case 'day': return (
                 <>
                     <NewEntry />
                     <MainTable />
                 </>
             )
             case 'archive': return (
+                <Archive />
+            )
+            default: return (
                 <>
-
+                    <NewEntry />
+                    <MainTable />
                 </>
             )
-            default: return null
         }
     }
 

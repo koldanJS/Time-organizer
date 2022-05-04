@@ -1,5 +1,5 @@
 import { getDate, getSelectedWeek } from "../../../functions/functions"
-import { CHANGE_DATA, SET_ACTIVE } from "../../types/appStateTypes/timeStateTypes"
+import { CHANGE_DATA, SET_ACTIVE, SET_OFFSET } from "../../types/appStateTypes/timeStateTypes"
 
 // console.log(getDate(0))
 
@@ -21,6 +21,13 @@ const timeStateReducer = (state = initialState, action) => {
                 offset: newOffset,
                 selectedWeek: getSelectedWeek(newOffset)}
         }
+        case SET_OFFSET: return {
+                ...state,
+                selectedDate: getDate(action.payload),
+                offset: action.payload,
+                selectedWeek: getSelectedWeek(action.payload)
+        }
+
         case SET_ACTIVE: return {...state, activeTaskId: action.payload}
         // case CHANGE_WEEK: return {...state, selectedWeek: getSelectedWeek(state.offset)}
         default: return state

@@ -1,25 +1,51 @@
-import React from 'react'
-import images from '../../../../../img/img'
-import Button from '../../../../../UI/Button/Button'
+import React, { useState } from 'react'
+import { getDateString, msPerDay, useSimpledStore } from '../../../../../../functions/functions'
+import { setOffset } from '../../../../../../redux/actions/appStateActions/timeStateActions'
 import LeftRightBtn from '../../../../../UI/LeftRightBtn/LeftRightBtn'
-import Calendar from '../../../../../UI/Calendar/Calendar'
 import './TableHeaderRight.css'
 
 const TableHeaderRight = () => {
 
-    const addCalendar = () => {
-        //Компонент еще не готов
+    const { dispatch } = useSimpledStore()
+    const [activeBtn, setActiveBtn] = useState('day')
+
+    const changeHandler = (event) => {
+        const now = new Date(getDateString()) //милисекунды на сегодня в 00:00
+        const selectedDate = new Date(event.target.value) //милисекунды на выбранный день в 00:00
+        const newOffset = Math.round((selectedDate - now)/msPerDay) //Смещение в днях
+        dispatch(setOffset(newOffset))
     }
+
+    const clickHandler = (direction) => {
+        if (direction > 0) {
+            setActiveBtn('week')
+            console.log('week')
+        } else {
+            setActiveBtn('day')
+            console.log('day')
+        }
+    }
+
+    const classListLeft = 'text btn-left day' + (activeBtn === 'day' ? ' active' : '')
+    const classListRight = 'text btn-right week' + (activeBtn === 'week' ? ' active' : '')
 
     return (
         <div className='table-header-right' >
-            <Button
-                classType='calendar-btn'
-                clickHandler={ addCalendar }
-            >
-                <img src={images.calendarLogo} alt='Calendar' />
-            </Button>
-            <LeftRightBtn classType='day-week' />
+            <input type='date' onChange={ changeHandler } />
+            <div className='left-right-btn day-week' >
+                <LeftRightBtn
+                    classList={ classListLeft }
+                    clickHandler={ () => clickHandler(-1) }
+                >
+                    День
+                </LeftRightBtn>
+                <LeftRightBtn
+                    classList={ classListRight }
+                    clickHandler={ () => clickHandler(1) }
+                >
+                    Неделя
+                </LeftRightBtn>
+            </div>
         </div>
     )
 }
