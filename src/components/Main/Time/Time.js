@@ -1,36 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Tabs from './Tabs/Tabs'
 import NewEntry from './NewEntry/NewEntry'
 import MainTable from './MainTable/MainTable'
 import Archive from './Archive/Archive'
-// import EmptyPage from './MainTable/EmptyPage/EmptyPage'
-import Week from './MainTable/Week/Week'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-const Time = ({activeTab}) => {
+const Time = () => {
+
+    const location = useLocation()
+    const navigate = useNavigate()
 
     const getContent = () => {
-        switch (activeTab) {
-            case 'day': return (
-                <>
-                    <NewEntry />
-                    <MainTable />
-                </>
-            )
-            case 'week': return (
-                <Week />
-                // <EmptyPage />
-            )
-            case 'archive': return (
-                <Archive />
-            )
-            default: return (
-                <>
-                    <NewEntry />
-                    <MainTable />
-                </>
-            )
-        }
+
+        if (location.pathname.includes('week')) return (
+            <MainTable content='week' />
+        )
+        if (location.pathname.includes('archive')) return (
+            <Archive />
+        )
+        return (
+            <>
+                <NewEntry />
+                <MainTable content='day' />
+            </>
+        )
     }
+
+    useEffect(() => {
+        if (location.pathname === '/time') navigate('/time/current')
+    })
 
     return (
         <>

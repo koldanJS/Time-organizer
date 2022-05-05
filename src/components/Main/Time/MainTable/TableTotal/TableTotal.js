@@ -4,7 +4,7 @@ import { getFormatTime, getTotalTime, useSimpledStore, getAddition, getSelectedW
 import './TableTotal.css'
 import axiosHandler from '../../../../../axios/axiosHandler'
 
-const TableTotal = () => {
+const TableTotal = ({ content }) => {
 
     const { user, userId, projects, tasks, selectedDate, selectedWeek, offset } = useSimpledStore()
     const { getUpdate } = useUpdate()
@@ -21,14 +21,7 @@ const TableTotal = () => {
 
         const selectedWeek = getSelectedWeek(offset)
 
-        // const fromDate = getDate(offsetRange[0])
-        // const toDate = getDate(offsetRange[1])
-
-        // const fromString = `${fromDate.dayOfMonth} ${fromDate.monthDayShort} ${fromDate.year}`
-        // const toString = `${toDate.dayOfMonth} ${toDate.monthDayShort} ${toDate.year}`
-        // const datePeriod = fromString + ' - ' + toString
-        // console.log('datePeriod', datePeriod)
-        const datePeriod = getDateString(offsetRange[0]) + '-' + getDateString(offsetRange[1])
+        const datePeriod = getDateString(offsetRange[0]) + '_' + getDateString(offsetRange[1])
         console.log('datePeriod', datePeriod)
 
         const archiveItems = {}
@@ -63,14 +56,22 @@ const TableTotal = () => {
 
     return (
         <div className='table-total'>
-            <div className='total' >
-                <p className='text size-20 width-700' >Итого:</p>
-                <p className='text' >{ time }</p>
-            </div>
+            {
+                content === 'day'
+                    ? <div className='total' >
+                        <p className='text size-20 width-700' >Итого:</p>
+                        <p className='text' >{ time }</p>
+                    </div>
+                    : null
+            }
             <div className='submit-week' >
-                <Button clickHandler={ clickHandler } >
-                    <p className='text' >Архивировать недельный отчет</p>
-                </Button>
+                {
+                    content === 'day'
+                        ? <Button clickHandler={ clickHandler } >
+                            <p className='text' >Архивировать недельный отчет</p>
+                        </Button>
+                        : null
+                }
             </div>
         </div>
     )

@@ -20,27 +20,27 @@ function App() {
       } />
       <Route path='/time' element={
         <Layout>
-          <Time activeTab='day' />
+          <Time />
         </Layout>
       } />
-      <Route path='/time/day' element={
+      <Route path='/time/current' element={
         <Layout>
-          <Time activeTab='day' />
+          <Time />
         </Layout>
       } />
-      <Route path='/time/week' element={
+      <Route path='/time/current/:id' element={
         <Layout>
-          <Time activeTab='week' />
+          <Time />
         </Layout>
       } />
-      <Route path='/time/week/:id' element={
+      <Route path='/time/current/week/:id' element={
         <Layout>
-          <Time activeTab='week' />
+          <Time />
         </Layout>
       } />
-      <Route path='/archive' element={
+      <Route path='/time/archive' element={
         <Layout>
-          <Time activeTab='archive' />
+          <Time />
         </Layout>
       } />
       <Route path='/projects' element={

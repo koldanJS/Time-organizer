@@ -3,14 +3,14 @@ import TableHeaderLeft from './TableHeaderLeft/TableHeaderLeft'
 import TableHeaderRight from './TableHeaderRight/TableHeaderRight'
 import './MainTableHeader.css'
 
-const MainTableHeader = () => { //Нужна передача состояния
+const MainTableHeader = ({ content }) => {
 
 
 
     return (
         <div className='main-table-header' >
-            <TableHeaderLeft />
-            <TableHeaderRight />
+            <TableHeaderLeft content={ content } />
+            <TableHeaderRight content={ content } />
         </div>
     )
 }

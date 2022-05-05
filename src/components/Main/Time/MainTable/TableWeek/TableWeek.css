@@ -1,6 +1,5 @@
 .week-table {
     width: 100%;
-    margin-bottom: 200px;
 }
 .week-table .header {
     padding-left: 10px;
@@ -17,15 +16,30 @@
     width: 80px;
 }
 .week-table .days .name {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
     width: 500px;
+    padding: 10px;
 }
 .week-table .head-item {
     background-color: #f0f0f0;
     border-top: 1px solid #BEBEBE;
     border-bottom: 1px solid #BEBEBE;
-    padding: 10px 0;
-    padding-left: 10px;
-    margin: 10px 0;
+}
+.week-table .head-item.days li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.week-table .head-item.days .name {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 15px 10px;
 }
 .week-table ul {
     list-style: none;
@@ -33,9 +47,12 @@
     margin: 0;
 }
 .week-table .week-table-item {
-    padding: 10px 0;
-    margin: 10px 0;
+    padding: 5px 0;
+    margin: 5px 0;
+}
+.week-table .week-table-item .empty-item {
+    margin: 0 auto;
 }
 .week-table .week-table-item .demiliter {
-    margin: 15px 0;
+    margin: 0;
 }

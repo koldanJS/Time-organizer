@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getDateString, msPerDay, useSimpledStore } from '../../../../../../functions/functions'
 import { setOffset } from '../../../../../../redux/actions/appStateActions/timeStateActions'
 import LeftRightBtn from '../../../../../UI/LeftRightBtn/LeftRightBtn'
 import './TableHeaderRight.css'
 
-const TableHeaderRight = () => {
+const TableHeaderRight = ({ content }) => {
 
     const { dispatch } = useSimpledStore()
-    const [activeBtn, setActiveBtn] = useState('day')
     const navigate = useNavigate()
 
     const changeHandler = (event) => {
@@ -20,18 +19,18 @@ const TableHeaderRight = () => {
 
     const clickHandler = (direction) => {
         if (direction > 0) {
-            setActiveBtn('week')
-            navigate('/time/week')
+            navigate('/time/current/week')
             console.log('week')
         } else {
-            setActiveBtn('day')
-            navigate('/time/day')
+            navigate('/time/current/day')
             console.log('day')
         }
     }
 
-    const classListLeft = 'text btn-left day' + (activeBtn === 'day' ? ' active' : '')
-    const classListRight = 'text btn-right week' + (activeBtn === 'week' ? ' active' : '')
+    let classListLeft = 'text btn-left day'
+    let classListRight = 'text btn-right week'
+    if (content === 'day') classListLeft += ' active'
+    if (content === 'week') classListRight += ' active'
 
     return (
         <div className='table-header-right' >

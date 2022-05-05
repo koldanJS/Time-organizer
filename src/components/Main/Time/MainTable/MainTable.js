@@ -1,30 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
 import MainTableHeader from './MainTableHeader/MainTableHeader'
 import MainTableDays from './MainTableDays/MainTableDays'
 import MainTableItems from './MainTableItems/MainTableItems'
 import TableTotal from './TableTotal/TableTotal'
 import './MainTable.css'
 import AddTaskForm from '../../../UI/AddTaskForm/AddTaskForm'
-import { getDateString, stopTracking, useSimpledStore, useUpdate } from '../../../../functions/functions'
+import { useSimpledStore } from '../../../../functions/functions'
 import { offAddForm, offEditForm } from '../../../../redux/actions/appStateActions/appStateActions'
-import axiosHandler from '../../../../axios/axiosHandler'
 import EditTaskForm from '../../../UI/EditTaskForm/EditTaskForm'
+import TableWeek from './TableWeek/TableWeek'
 
-const MainTable = () => {
+const MainTable = ({ content }) => {
 
-    const [timeUpdate , setTimeUpdate] = useState(0)
-    const { user, userId, isAddFormOn, isEditFormOn, dispatch } = useSimpledStore()
-    const { getUpdate } = useUpdate()
-
-    setInterval(() => { //Каждые 10 сек обновлять таблицу времени новыми данными (без асинхронных запросов)
-        if (user.activeEntry) { //Если есть активная запись
-            if (user?.activeEntry?.timesSheetId !== getDateString()) {  //Если начался новый день
-                stopTracking( user, userId, axiosHandler, getUpdate )    //Выключить активную запись
-            }
-            setTimeUpdate(Math.round(new Date().getSeconds()/30))   //Если есть активная запись, обновить таблицу каждые 30 сек
-        }
-      }, 20000);
-      console.log('render mainTable ', new Date().getHours(), ':', new Date().getMinutes(), ':', new Date().getSeconds())
+    const { isAddFormOn, isEditFormOn, dispatch } = useSimpledStore()
 
     const closeAddFormHandler = () => {
         dispatch(offAddForm())
@@ -35,11 +23,17 @@ const MainTable = () => {
 
     return (
         <div className='main-table'>
-            <MainTableHeader />
-            <MainTableDays />
-            <hr className='demiliter' />
-            <MainTableItems />
-            <TableTotal />
+            <MainTableHeader content={ content } />
+            {
+                content === 'day'
+                    ? <>
+                        <MainTableDays />
+                        <hr className='demiliter' />
+                        <MainTableItems />
+                    </>
+                    : <TableWeek />
+            }
+            <TableTotal content={ content } />
             {
                 isAddFormOn
                     ? <AddTaskForm closeFormHandler={closeAddFormHandler} />

@@ -172,6 +172,26 @@ export const getAddition = ( user, selectedWeek, timesSheetId = false ) => {
 export const msPerDay = 1000*3600*24
 export const msPerMin = 1000*60
 
+export const getOffset = (dateString) => {
+    const selectedDate = new Date(dateString)
+    const today = new Date(getDateString())
+    return Math.round((selectedDate - today) / msPerDay)
+}
+
+export const getDatePeriod = (dateString) => {
+    const currentOffset = getOffset(dateString)
+    const weekRange = getRange(currentOffset)  //Диапазон смещений для [Пн, Вс] в выбранной неделе
+    const offsetRange = [weekRange[0] + currentOffset, weekRange[1] + currentOffset]  //Диапазон смещений для [Пн, Вс] относительно сегодня
+
+    const fromDate = getDate(offsetRange[0])
+    const toDate = getDate(offsetRange[1])
+
+    const fromString = `${fromDate.dayOfMonth} ${fromDate.monthDayShort} ${fromDate.year}`
+    const toString = `${toDate.dayOfMonth} ${toDate.monthDayShort} ${toDate.year}`
+    const datePeriod = fromString + ' - ' + toString
+    return datePeriod
+}
+
 export const getDate = (offset) => {
     const shortDays = [
         null,

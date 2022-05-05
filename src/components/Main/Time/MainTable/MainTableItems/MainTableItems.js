@@ -1,13 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TableItem from './TableItem/TableItem'
 import './MainTableItems.css'
 import EmptyItem from './EmptyItem/EmptyItem'
-import { msPerMin, useSimpledStore } from '../../../../../functions/functions'
+import { getDateString, msPerMin, stopTracking, useSimpledStore, useUpdate } from '../../../../../functions/functions'
+import axiosHandler from '../../../../../axios/axiosHandler'
 
 const MainTableItems = () => {
 
-    const { user, projects, tasks, isLoading, selectedDate, offset } = useSimpledStore()
+    const [timeUpdate , setTimeUpdate] = useState(0)
+    const { userId, user, projects, tasks, isLoading, selectedDate, offset } = useSimpledStore()
+    const { getUpdate } = useUpdate()
     const keySelectedDate = selectedDate.dateString
+
+    setInterval(() => { //Каждые 10 сек обновлять таблицу времени новыми данными (без асинхронных запросов)
+        if (user.activeEntry) { //Если есть активная запись
+            if (user?.activeEntry?.timesSheetId !== getDateString()) {  //Если начался новый день
+                stopTracking( user, userId, axiosHandler, getUpdate )    //Выключить активную запись
+            }
+            setTimeUpdate(Math.round(new Date().getSeconds()/30))   //Если есть активная запись, обновить таблицу каждые 30 сек
+        }
+    }, 20000);
+    console.log('render TableItems ', new Date().getHours(), ':', new Date().getMinutes(), ':', new Date().getSeconds())
 
     const getCurrentEntry = (item, index) => {
         const projectName = projects[item.projectId]?.projectName
